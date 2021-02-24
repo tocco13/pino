@@ -28,12 +28,18 @@ $(document).ready(function(){
  		
 	$('#editbtn').click(function(){
 		
-		var p = document.getElementById("nametag").innerText
-		alert(p);
+		var p = document.getElementById("nametag").innerText;
 		$('#nameparam').val(p);
-		alert($('#nameparam').val());
 		document.getElementById("editform").submit();
 	
 	});	
+	
+	$('#searchbtn').click(function(){
+	
+		var formdata = new FormData();
+		
+		$('#fields').submit();
+	});
+
 	
 });

@@ -40,7 +40,7 @@
 			<div class="w3-right" style="padding-right: 25px; height: 50px;">
 				<button type="submit" class="register" id="register">등록</button>
 				<button class="reset">초기화</button>
-				<button class="previous">이전</button>
+				<button class="previous" id="previous">이전</button>
 			</div>
 		</div>
 		<form class="fields" id="fields" method="POST" action="/register/registerproc.pino">
@@ -55,14 +55,14 @@
 			<img class="profilepic" src="/images/noimage.jpg">
 			
 			<label class="empno" for="empnum">*사번</label>
-			<input type="text" class="empnum" name="empnum" id="empno" disabled/>		
+			<input type="text" class="empnum" name="sabun" id="empno" value="a" disabled/>		
 			
 			<label class="empname" for="empkrname">*한글성명</label>
 			<input type="text" class="empkrname" name="empkrname" id="empkrname">		
 			
 			<label class="empname2" for="empenname">영문성명</label>
 			<input type="text" class="empenname" name="eng_name" id="empenname">
-			
+					
 			<label class="empiden" for="empid">*아이디</label>
 			<input type="text" class="empid" name="empid" id="empid">
 			
@@ -74,14 +74,14 @@
 			
 			<label class="empphone" for="emptel">전화번호</label>
 			<input type="text" class="emptel" name="phone" id="emptel">
-			
+		
 			<label class="empmob" for="empmobile">*핸드폰번호</label>
 			<input type="text" class="empmobile" name="empmobile" id="empmobile">
 				
 			<label class="emprrn" for="empjoomin">*주민번호</label>
 			<input type="text" class="empjoomin" name="empjoomin" id="empjoomin" maxlength="14">
 			<input type="hidden" class="empjoomin2" name="reg_no" id="empjoomin2">
-
+			
 			<label class="empage" for="empyear">연령</label>
 			<input type="text" class="empyear" name="years" id="empyear" onclick="showAge();" value="">
 				
@@ -96,7 +96,7 @@
 			</select>
 			<input type="hidden" class="empemailfull" name="empemailfull" id="empemailfull">
 			</div>
-	
+			
 			<label class="empjt" for="empjobtypeselect">직종체크</label>
 			<div class="jobandsex">
 			<select class="empjobtypeselect" name="job_type" id="empjobtype">
@@ -105,6 +105,7 @@
 				<option value="${jtlist.job_type}">${jtlist.job_type}</option>
 </c:forEach>
 			</select>
+	
 			<label class="empgen" for="empgenselect">성별</label>
 			<select class="empgenselect" name="sex" id="empgenselect">
 				<option value="">(선택)</option>
@@ -125,10 +126,10 @@
 			<input type="file" name="profilepic" id="profilepic" style="display:none;">
 			
 			<label class="emprank" for="emprankselect">직위</label>
-			<select class="emprankselect" name="job_rank" id="emprankselect">
+			<select class="emprankselect" name="pos_gbn_code" id="emprankselect">
 				<option value="">(선택)</option>
 <c:forEach var="jobrank" items="${jobrank}">
-				<option value="${jobrank.job_rank}">${jobrank.job_rank}</option>
+				<option value="${jobrank.pos_gbn_code}">${jobrank.pos_gbn_code}</option>
 </c:forEach>
 			</select>
 				
@@ -136,13 +137,13 @@
 			<select class="empdeptselect" name="dept_code" id="empdeptselect">
 				<option value="">(선택)</option>
 <c:forEach var="dept" items="${dept}">
-				<option value="${dept.dept}">${dept.dept}</option>
+				<option value="${dept.dept_code}">${dept.dept_code}</option>
 </c:forEach>
 			</select>
 
 			<label class="empsal" for="empsalary">연봉</label>
-			<input type="text" class="empsalary" name="salary" id="empsalary" placeholder="(만원)" style="text-align: right;">
-
+			<input type="text" class="empsalary" id="empsalary" placeholder="(만원)" style="text-align: right;" onkeyup="noSpace(this);inputNumberFormat(this);" onchange="inputNumberFormat(this);" >
+			<input type="hidden" id="fixedsalary" name="salary"/>
 
 			<label class="empstatus" for="empstat">입사구분</label>
 			<div class="field20">
@@ -198,11 +199,11 @@
 			</div>			
 			<label class="milindate">입영일자</label>
 			<div class="field26">
-				<input class="mildate" type="text" name="mil_startdate" id="datepicker" disabled="true">
+				<input class="mildate" type="date" name="mil_startdate" id="datepicker" disabled="true">
 			</div>
 			<label class="miloutdate">전역일자</label>
 			<div class="field27">
-				<input class="mildate" type="text" name="mil_enddate" id="datepicker2" disabled="true">
+				<input class="mildate" type="date" name="mil_enddate" id="datepicker2" disabled="true">
 			</div>
 
 			<label class="kosa" for="kosareg">KOSA등록</label>
@@ -224,11 +225,11 @@
 			</div>			
 			<label class="empindate">입사일자</label>
 			<div class="field30">
-				<input class="empdate" type="text" name="join_day" id="datepicker3">
+				<input class="empdate" type="date" name="join_day" id="datepicker3">
 			</div>
 			<label class="empoutdate">퇴사일자</label>
 			<div class="field31">
-				<input class="empdate" type="text" name="retire_day" id="datepicker4">
+				<input class="empdate" type="date" name="retire_day" id="datepicker4">
 			</div>
 			
 			<label class="business" for="businessno">사업자번호</label>
@@ -244,7 +245,6 @@
 				<input class="businesscert" type="text" name="cmp_reg_image" id="businesscert">
 			</div>
 			<div class="field35">
-				<input class="businesscert2" type="file" name="businesscert2" id="businesscert2" accept="image/png, image/jpeg, image/jpg" style="display:none;">
 				<input class="uploadcertbtn" id="uploadcertbtn" type="button" value="등록">
 				<input class="previewcertbtn" id="previewcertbtn" type="button" value="미리보기">
 			</div>

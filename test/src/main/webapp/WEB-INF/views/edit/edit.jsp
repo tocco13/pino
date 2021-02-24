@@ -55,14 +55,15 @@
 			<img class="profilepic" src="/images/noimage.jpg">
 <c:forEach var="detail" items="${list}">			
 			<label class="empno" for="empnum">*사번</label>
-			<input type="text" class="empnum" name="empnum" id="empno" disabled value="${detail.sabun}"/>		
+			<input type="text" class="empnum" id="empno" value="${detail.sabun}" disabled/>
+			<input type="hidden" class="empnum2" name="sabun" id="realempno"/>		
 			
 			<label class="empname" for="empkrname">*한글성명</label>
 			<input type="text" class="empkrname" name="empkrname" id="empkrname" value="${detail.name}">		
 			
 			<label class="empname2" for="empenname">영문성명</label>
-			<input type="text" class="empenname" name="empenname" id="empenname" value="${detail.eng_name}">
-			
+			<input type="text" class="empenname" name="eng_name" id="empenname" value="${detail.eng_name}">
+					
 			<label class="empiden" for="empid">*아이디</label>
 			<input type="text" class="empid" name="empid" id="empid" value="${detail.id}">
 			
@@ -73,41 +74,42 @@
 			<input type="password" class="emppwcheck" name="emppwcheck" id="emppwcheck">
 			
 			<label class="empphone" for="emptel">전화번호</label>
-			<input type="text" class="emptel" name="emptel" id="emptel" value="${detail.phone}">
-			
+			<input type="text" class="emptel" name="phone" id="emptel" value="${detail.phone}">
+		
 			<label class="empmob" for="empmobile">*핸드폰번호</label>
 			<input type="text" class="empmobile" name="empmobile" id="empmobile" value="${detail.hp}">
 				
 			<label class="emprrn" for="empjoomin">*주민번호</label>
 			<input type="text" class="empjoomin" name="empjoomin" id="empjoomin" maxlength="14" value="${detail.reg_no}">
-			<input type="hidden" class="empjoomin2" name="empjoomin" id="empjoomin2">
-
-			<label class="empage" for="empyear">연령</label>
-			<input type="text" class="empyear" name="empyear" id="empyear" onclick="showAge();" value="${detail.years}">
+			<input type="hidden" class="empjoomin2" name="reg_no" id="empjoomin2">
 			
+			<label class="empage" for="empyear">연령</label>
+			<input type="text" class="empyear" name="years" id="empyear" onclick="showAge();" value="${detail.years}">
+				
 			<label class="empeadd" for="empemail">*이메일</label>
 			<div class="emaildiv">
-			<input type="text" class="empemail" name="empemail" id="empemail" value="">
+			<input type="text" class="empemail" name="empemail" id="empemail">
 			<select class="empmailprovider" name="empmailprovider" id="empmailprovider">
 				<option value="">(선택)</option>
-	<c:forEach var="eplist" items="${eplist}">
+<c:forEach var="eplist" items="${eplist}">
 				<option value="${eplist.emailprovider}">${eplist.emailprovider}</option>
-	</c:forEach>
+</c:forEach>
 			</select>
 			<input type="hidden" class="empemailfull" name="empemailfull" id="empemailfull">
 			</div>
-	
+			
 			<label class="empjt" for="empjobtypeselect">직종체크</label>
 			<div class="jobandsex">
-			<select class="empjobtypeselect" name="empjobtypeselect" id="empjobtype">
-				<option value="${detail.job_type}">${detail.job_type}</option>
-	<c:forEach var="jtlist" items="${jobtype}">
+			<select class="empjobtypeselect" name="job_type" id="empjobtype">
+				<option  value="${detail.job_type}">${detail.job_type}</option>
+<c:forEach var="jtlist" items="${jobtype}">
 				<option value="${jtlist.job_type}">${jtlist.job_type}</option>
-	</c:forEach>
+</c:forEach>
 			</select>
+	
 			<label class="empgen" for="empgenselect">성별</label>
-			<select class="empgenselect" name="empgenselect" id="empgenselect">
-				<option value="">(선택)</option>
+			<select class="empgenselect" name="sex" id="empgenselect">
+				<option value="${detail.sex}">${detail.sex}</option>
 				<option value="M">남</option>
 				<option value="F">여</option>
 			</select>
@@ -115,38 +117,38 @@
 			
 			<label class="empadd" for="empadd">주소</label>
 			<div class="field14">
-				<input type="text" name="empadd" id="empadd" placeholder="우편번호" value="${detail.zip}">
+				<input type="text" name="zip" id="empadd"  value="${detail.zip}">
 				<button type="button" class="empaddsearchbutton" id="empaddsearchbutton" onclick='execDaumPostCode()'>주소검색</button>
 			</div>
-			<input type="text" class="empaddsearch" name="empaddsearch" id="empaddsearch" value="${detail.addr1}" style="text-align:left;">
-			<input type="text" class="empaddspec" name="empaddspec" id="empaddspec" value="${detail.addr2}" style="text-align:left;">
+			<input type="text" class="empaddsearch" name="addr1" id="empaddsearch"  value="${detail.addr1}" style="text-align:left;">
+			<input type="text" class="empaddspec" name="addr2" id="empaddspec" value="${detail.addr2}" style="text-align:left;">
 
 			<button type="submit" class="button uploadbutton" id="uploadbutton">사진올리기</button>
 			<input type="file" name="profilepic" id="profilepic" style="display:none;">
 			
 			<label class="emprank" for="emprankselect">직위</label>
-			<select class="emprankselect" name="emprankselect" id="emprankselect">
-				<option value="${detail.job_rank}">${detail.job_rank}</option>
-	<c:forEach var="jobrank" items="${jobrank}">
-				<option value="${jobrank.job_rank}">${jobrank.job_rank}</option>
-	</c:forEach>
+			<select class="emprankselect" name="pos_gbn_code" id="emprankselect">
+				<option  value="${detail.pos_gbn_code}">${deteail.pos_gbn_code}</option>
+<c:forEach var="jobrank" items="${jobrank}">
+				<option value="${jobrank.pos_gbn_code}">${jobrank.pos_gbn_code}</option>
+</c:forEach>
 			</select>
 				
 			<label class="empdept" for="empdeptselect">부서</label>
-			<select class="empdeptselect" name="empdeptselect" id="empdeptselect">
+			<select class="empdeptselect" name="dept_code" id="empdeptselect">
 				<option value="${detail.dept_code}">${detail.dept_code}</option>
-	<c:forEach var="dept" items="${dept}">
-				<option value="${dept.dept}">${dept.dept}</option>
-	</c:forEach>
+<c:forEach var="dept" items="${dept}">
+				<option value="${dept.dept_code}">${dept.dept_code}</option>
+</c:forEach>
 			</select>
 
 			<label class="empsal" for="empsalary">연봉</label>
-			<input type="text" class="empsalary" name="empsalary" id="empsalary" value="${detail.salary}" style="text-align: right;">
-
+			<input type="text" class="empsalary" id="empsalary"  value="${detail.salary}" style="text-align: right;" onkeyup="inputNumberFormat(this);" onchange="inputNumberFormat(this);" >
+			<input type="hidden" id="fixedsalary" name="salary"/>
 
 			<label class="empstatus" for="empstat">입사구분</label>
 			<div class="field20">
-				<select class="empstatselect" name="empstatselect" id="empstatselect">
+				<select class="empstatselect" name="current_yn" id="empstatselect">
 					<option value="${detail.current_yn}">${detail.current_yn}</option>
 					<option value="Y">입사</option>
 					<option value="N">퇴사</option>
@@ -154,7 +156,7 @@
 			</div>
 			<label class="emplvl" for="emplevel">등급</label>
 			<div class="field21">
-				<select class="emplevel" name="emplevel" id="emplevel">
+				<select class="emplevel" name="gart_level" id="emplevel">
 					<option value="${detail.gart_level}">${detail.gart_level}</option>
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -164,23 +166,23 @@
 			</div>
 			<label class="empins" for="empinsert">투입여부</label>
 			<div class="field22">
-				<select class="empinsert" name="empinsert" id="empinsert">
+				<select class="empinsert" name="put_yn" id="empinsert">
 					<option value="${detail.put_yn}">${detail.put_yn}</option>
-					<option value="N">대기</option>
 					<option value="Y">투입</option>
+					<option value="N">대기</option>
 				</select>
 			</div>
 			<label class="empmilstat" for="empmilstate">입대여부</label>
 			<div class="field23">
-				<select class="empmilstate" name="empmilstate" id="empmilstate">
-					<option value="${detail.mil_yn}"> ${detail.mil_yn}</option>
+				<select class="empmilstate" name="mil_yn" id="empmilstate">
+					<option value="${detail.mil_yn}">${detail.mil_yn}</option>
 					<option value="N">미필</option>
 					<option value="Y">군필</option>
 				</select>
 			</div>		
 			<label class="milt" for="miltype">군별</label>
 			<div class="field24">
-				<select class="miltype" name="miltype" id="miltype" disabled="true">
+				<select class="miltype" name="mil_type" id="miltype" disabled="true">
 					<option value="${detail.mil_type}">${detail.mil_type}</option>
 <c:forEach var="miltype" items="${miltype}">
 					<option value="${miltype.mil_type}">${miltype.mil_type}</option>
@@ -189,8 +191,8 @@
 			</div>			
 			<label class="milr" for="milrank">계급</label>
 			<div class="field25">
-				<select class="milrank" name="milrank" id="milrank" disabled="true">
-					<option value="${detail.mil_level}">${deteail.mil_level}</option>
+				<select class="milrank" name="mil_level" id="milrank" disabled="true">
+					<option value="${detail.mil_level}">${detail.mil_level}</option>
 <c:forEach var="milrank" items="${milrank}">
 				<option value="${milrank.mil_level}">${milrank.mil_level}</option>
 </c:forEach>
@@ -198,25 +200,25 @@
 			</div>			
 			<label class="milindate">입영일자</label>
 			<div class="field26">
-				<input class="mildate" type="text" name="datepicker" id="datepicker" value="${detail.mil_startdate}" disabled="true">
+				<input class="mildate" type="date" name="mil_startdate" id="datepicker" disabled="true" value="${detail.mil_startdate}">
 			</div>
 			<label class="miloutdate">전역일자</label>
 			<div class="field27">
-				<input class="mildate" type="text" name="datepicker2" id="datepicker2" value="${detail.mil_enddate}" disabled="true">
+				<input class="mildate" type="date" name="mil_enddate" id="datepicker2" disabled="true" value="${detail.mil_enddate}">
 			</div>
 
 			<label class="kosa" for="kosareg">KOSA등록</label>
 			<div class="field28">
-				<select class="kosareg" name="kosareg" id="kosareg">
+				<select class="kosareg" name="kosa_reg_yn" id="kosareg">
 					<option value="${detail.kosa_reg_yn}">${detail.kosa_reg_yn}</option>
-					<option value="N">미등록</option>
 					<option value="Y">등록</option>
+					<option value="N">미등록</option>
 				</select>
 			</div>			
 			<label class="kosa2" for="kosarank">KOSA등급</label>
 			<div class="field29">
-				<select class="kosarank" name="kosarank" id="kosarank" disabled="true">
-					<option value="${detail.kosa_class_code }">(선택)</option>
+				<select class="kosarank" name="kosa_class_code" id="kosarank" disabled="true">
+					<option value="${detail.kosa_class_code}">${detail.kosa_class_code}</option>
 <c:forEach var="kclass" items="${kosaclass}">
 					<option value="${kclass.kosa_class_code}">${kclass.kosa_class_code}</option>
 </c:forEach>
@@ -224,38 +226,37 @@
 			</div>			
 			<label class="empindate">입사일자</label>
 			<div class="field30">
-				<input class="empdate" type="text" name="datepicker3" id="datepicker3" value="${detail.join_day}">
+				<input class="empdate" type="date" name="join_day" id="datepicker3" value="${detail.join_day}">
 			</div>
 			<label class="empoutdate">퇴사일자</label>
 			<div class="field31">
-				<input class="empdate" type="text" name="datepicker4" id="datepicker4" value="${detail.retire_day}">
+				<input class="empdate" type="date" name="retire_day" id="datepicker4" value="${detail.retire_day}">
 			</div>
 			
 			<label class="business" for="businessno">사업자번호</label>
 			<div class="field32">
-				<input class="businessno" type="text" name="businessno" id="businessno" value="${detail.cmp_reg_no}">
+				<input class="businessno" type="text" name="cmp_reg_no" id="businessno" value="${detail.cmp_reg_no}">
 			</div>
 			<label class="business2" for="businessname">업체명</label>
 			<div class="field33">
-				<input class="businessname" type="text" name="businessname" id="businessname" value="${detail.crm_name}">
+				<input class="businessname" type="text" name="crm_name" id="businessname" value="${detail.crm_name}">
 			</div>
 			<label class="business3" for="businesscert">사업자등록증</label>
 			<div class="field34">
-				<input class="businesscert" type="text" name="businesscert" id="businesscert">
+				<input class="businesscert" type="text" name="cmp_reg_image" id="businesscert" value="${detail.cmp_reg_image}">
 			</div>
 			<div class="field35">
-				<input class="businesscert2" type="file" name="businesscert2" id="businesscert2" accept="image/png, image/jpeg, image/jpg" style="display:none;">
 				<input class="uploadcertbtn" id="uploadcertbtn" type="button" value="등록">
 				<input class="previewcertbtn" id="previewcertbtn" type="button" value="미리보기">
 			</div>
 			
 			<label class="intro" for="selfintro">자기소개</label>
 			<div class="field36">
-				<textarea class="selfintro" name="selfintro" id="selfintro" >${detail.self_intro}</textarea>
+				<textarea class="selfintro" name="self_intro" id="selfintro">${detail.self_intro}</textarea>
 			</div>
 			<label class="resume" for="resumelink">이력서</label>
 			<div class="field37">
-				<input class="resumelink" type="text" name="resumelink" id="resumelink">
+				<input class="resumelink" type="text" name="resume" id="resumelink" value="${detail.resume}">
 			</div>
 			<div class="field38">
 				<input class="resume2" type="file" name="resume2" id="resume2" style="display:none;">

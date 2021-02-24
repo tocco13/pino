@@ -58,6 +58,8 @@ public class MainController {
 			@RequestParam(value = "retire_day", required = false) String retire_day,
 			@RequestParam(value = "job_type", required = false) String job_type) {
 
+		
+		
 		List<InsaVO> jobtype = rDao.getJobType();
 		List<InsaVO> jobrank = rDao.getJobRank();
 
@@ -76,9 +78,10 @@ public class MainController {
 		map.put("retire_day", retire_day);
 		map.put("job_type", job_type);
 		 
-
+		
+		
 		List<InsaVO> result = sDao.searchEmp(map);
-
+		
 		mv.addObject("list", result);
 		mv.addObject("jobtype", jobtype);
 		mv.addObject("jobrank", jobrank);
@@ -111,13 +114,15 @@ public class MainController {
 
 	@RequestMapping(value = "/register/registerproc", method = RequestMethod.POST)
 	public ModelAndView registerproc(ModelAndView mv, InsaVO iVO) {
-		
+		System.out.println("등록시작");
 		int cnt = 0;
 		cnt = rDao.addEmp(iVO);
 		if (cnt == 1) {
 			mv.setViewName("redirect:/register/register.pino");
+			System.out.println("등록끝");
 		} else {
 			mv.setViewName("redirect:/main/main.pino");
+			System.out.println("등록실패");
 		}
 
 		return mv;
@@ -125,8 +130,6 @@ public class MainController {
 
 	@RequestMapping(value = "/edit/edit", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView edit(ModelAndView mv, HttpServletRequest req, @RequestParam(value="nameparam", required=false)String name) {
-
-		System.out.println(name);
 		
 		List<InsaVO> list = sDao.empDetail(name);
 		
@@ -154,7 +157,7 @@ public class MainController {
 	public ModelAndView editProc(ModelAndView mv, InsaVO iVO, RedirectAttributes red) {
 		
 		String name = iVO.getName();
-		System.out.println(name);
+
 		int tmp = rDao.empUpdate(iVO);
 		
 		if(tmp !=0) {

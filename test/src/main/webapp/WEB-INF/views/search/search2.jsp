@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>인사관리시스템</title>
-<link rel="shortcut icon" href="null">
+<link rel="shortcut icon" href="#">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/css/w3.css">
 <link rel="stylesheet" href="/resources/css/search.css">
@@ -32,7 +32,7 @@
 	</header>
 	<section>
 	<h2 class="emplist">직원 리스트</h2>
-	<form class="fields" id="fields" name="fields" action="/edit/edit.pino" method="POST">
+	<form class="fields" id="fields" name="fields" action="/search/search2.pino" method="POST">
 	<div class="search">
 		<label class="empno" for="empsabun">사번 </label>
 		<input type="text" class="empsabun" name="empsabun" id="empsabun">
@@ -56,7 +56,7 @@
 		<select class="emprank" id="emprank" name="emprank">
 			<option value="">(선택)</option>
 <c:forEach var="jobrank" items="${jobrank}">
-				<option value="${jobrank.code}">${jobrank.job_rank}</option>
+				<option value="${jobrank.pos_gbn_code}">${jobrank.pos_gbn_code}</option>
 </c:forEach>
 		</select>
 		<label class="empindate" for="empdatein">입사일자</label>
@@ -67,7 +67,7 @@
 		<select class="jobtypebox" id="jobtypebox" name="jobtype">
 			<option value="">(선택)</option>
 <c:forEach var="jtlist" items="${jobtype}">
-				<option value="${jtlist.code}">${jtlist.job_type}</option>
+				<option value="${jtlist.job_type}">${jtlist.job_type}</option>
 </c:forEach>
 		</select>	
 	</div>
@@ -101,14 +101,15 @@
 			<c:if test="${not empty list}">
 				<c:forEach var="info" items="${list}">
 					<tr class="searchresult" id="searchresult">
-						<td align="center">${info.sabun}</td>
+						<td align="center" id="sabuntag">${info.sabun}</td>
 						<td align="center" id="nametag" align="center">${info.name}</td>
-						<td align="center">${info.hp}</td>
-						<td align="center">${info.pos_gbn_code}</td>
-						<td align="center">${info.join_day}</td>
-						<td align="center">${info.retire_day}</td>
-						<td align="center">${info.put_yn}</td>
-						<td align="center">${info.salary}</td>
+						<td align="center" id="regtag">${info.reg_no}</td>
+						<td align="center" id="hptag">${info.hp}</td>
+						<td align="center" id="postag">${info.pos_gbn_code}</td>
+						<td align="center" id="jdaytag">${info.join_day}</td>
+						<td align="center" id="rdaytag">${info.retire_day}</td>
+						<td align="center" id="puttag">${info.put_yn}</td>
+						<td align="center" id="salarytag">${info.salary}</td>
 						<td align="center">
 						<input type="button" class="editbtn" id="editbtn" value="수정"/>
 						<input type="button" class="deletebtn" id="deletebtn" value="삭제"/>

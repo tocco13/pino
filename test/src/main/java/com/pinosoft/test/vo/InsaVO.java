@@ -1,14 +1,45 @@
 package com.pinosoft.test.vo;
 
 import java.sql.Date;
-import java.sql.Time;
 
 public class InsaVO {
-	private int sabun, years, zip, salary, code;
-	private String join_day, retire_day, put_yn, name, reg_no, eng_name, phone, hp, pos_gbn_code, 
-	cmp_reg_no, cmp_reg_image, sex, email, emailprovider, addr1, addr2, dept_code, dept, join_gbn_code, 
-	id, pwd, kosa_reg_yn, kosa_class_code, mil_yn, mil_type, mil_level, mil_startdate, mil_enddate, 
-	job_type, job_rank, gart_level, self_intro, crm_name, profile, resume, current_yn;
+	private int sabun; //사번 int
+	private String join_day; //입사일 string
+	private String retire_day ; //퇴사일 string
+	private String put_yn ; //투입여부 string
+	private String name ; //이름 string
+	private String reg_no ; //주민번호 string
+	private String eng_name ; //영명 string
+	private String phone ; //전번 string
+	private String hp ; //핸드폰 string
+	private String pos_gbn_code ; //직위 string
+	private String cmp_reg_no ; //사업자등록번호 string
+	private String cmp_reg_image ; //사업자등록증 이미지 string
+	private String sex ; //성별 string
+	private int years ; //연령 int
+	private String email ; //이메일 string
+	private int zip ; //우편번호 int
+	private String addr1 ; //주소 string
+	private String addr2 ; //세부주소 string
+	private String dept_code ; //부서 string
+	private String id ; //아이디 string
+	private String pwd ; //비번 string
+	private int salary ; //연봉 int
+	private String kosa_reg_yn ; //kosa등록여부 string
+	private String kosa_class_code ; //kosa 등급 string
+	private String mil_yn ; //입대여부 string
+	private String mil_type ; //군별 string
+	private String mil_level ; //계급 string
+	private String mil_startdate ; //입대일 string
+	private String mil_enddate ; //전역일 string
+	private String job_type ; //직종 string
+	private String gart_level ; //등급 string
+	private String self_intro ; // 자기소개 string
+	private String crm_name ; //업체명 string
+	private String profile ; //프로필 이미지 string
+	private String resume ; //이력서 이미지 string
+	private String current_yn ; //입사여부 string
+	private String emailprovider; //이메일 확장자용
 	private Date jsetDate, rsetDate;
 	
 	public int getSabun() {
@@ -113,12 +144,7 @@ public class InsaVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getEmailprovider() {
-		return emailprovider;
-	}
-	public void setEmailprovider(String emailprovider) {
-		this.emailprovider = emailprovider;
-	}
+
 	public String getAddr1() {
 		return addr1;
 	}
@@ -136,12 +162,6 @@ public class InsaVO {
 	}
 	public void setDept_code(String dept_code) {
 		this.dept_code = dept_code;
-	}
-	public String getJoin_gbn_code() {
-		return join_gbn_code;
-	}
-	public void setJoin_gbn_code(String join_gbn_code) {
-		this.join_gbn_code = join_gbn_code;
 	}
 	public String getId() {
 		return id;
@@ -245,29 +265,17 @@ public class InsaVO {
 	public void setRsetDate(Date rsetDate) {
 		this.rsetDate = rsetDate;
 	}
-	public String getJob_rank() {
-		return job_rank;
-	}
-	public void setJob_rank(String job_rank) {
-		this.job_rank = job_rank;
-	}
-	public String getDept() {
-		return dept;
-	}
-	public void setDept(String dept) {
-		this.dept = dept;
-	}
-	public int getCode() {
-		return code;
-	}
-	public void setCode(int code) {
-		this.code = code;
-	}
 	public String getCurrent_yn() {
 		return current_yn;
 	}
 	public void setCurrent_yn(String current_yn) {
 		this.current_yn = current_yn;
+	}
+	public String getEmailprovider() {
+		return emailprovider;
+	}
+	public void setEmailprovider(String emailprovider) {
+		this.emailprovider = emailprovider;
 	}
 
 	

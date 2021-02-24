@@ -24,7 +24,7 @@
 	
 	<select id="getJobRank" resultType="iVO" parameterType="String">
 		SELECT
-			code, name as job_rank
+			code, name as pos_gbn_code
 		FROM 
 			insa_com
 		WHERE 
@@ -33,7 +33,7 @@
 	
 	<select id="getDept" resultType="iVO" parameterType="String">
 		SELECT
-			code, name as dept
+			code, name as dept_code
 		FROM 
 			insa_com
 		WHERE 
@@ -77,8 +77,10 @@
 	</select>
 	
 	<insert id="addEmp" parameterType="iVO">
-		INSERT INTO insa (sabun, name, eng_name, id, pwd, phone, hp, reg_no, years, email, job_type, 
-		sex, zip, addr1, addr2, job_rank, dept_code, salary, gart_level, put_yn, 
+		INSERT INTO insa (
+		sabun, name, id, pwd,  hp, reg_no, 
+		eng_name, phone, years, email, job_type, 
+		sex, zip, addr1, addr2, pos_gbn_code, dept_code, salary, gart_level, put_yn, 
 		mil_yn, 
 		mil_type, 
 		mil_level, 
@@ -87,15 +89,18 @@
 		kosa_reg_yn, 
 		kosa_class_code, 
 		join_day, retire_day, 
-		cmp_reg_no, crm_name, self_intro)
+		cmp_reg_no, crm_name, self_intro
+		)
 		VALUES (
-			max(sabun)+1,
-			#{name}, 
-			#{eng_name}, 
-			#{id}, #{pwd}, #{phone}, #{hp}, #{reg_no}, #{years}, #{email}, #{job_type},
-			#{sex}, #{zip}, #{addr1}, #{addr2}, #{job_rank}, #{dept_code}, #{salary}, #{gart_level}, #{put_yn},
-			#{mil_yn},	#{mil_type}, #{mil_level}, #{mil_startdate}, #{mil_enddate}, 
-			#{kosa_reg_yn}, #{kosa_class_code}, #{join_day}, #{retire_day}, #{cmp_reg_no}, #{crm_name}, #{self_intro})	
+			(select max(sabun)+1 from insa),
+			#{name}, #{id}, #{pwd}, #{hp}, #{reg_no},
+			#{eng_name, jdbcType=VARCHAR}, #{phone}, #{years, jdbcType=VARCHAR}, #{email}, #{job_type, jdbcType=VARCHAR},
+			#{sex, jdbcType=VARCHAR}, #{zip, jdbcType=VARCHAR}, #{addr1, jdbcType=VARCHAR}, #{addr2, jdbcType=VARCHAR}, #{pos_gbn_code, jdbcType=VARCHAR}, 
+			#{dept_code, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{gart_level, jdbcType=VARCHAR}, #{put_yn, jdbcType=VARCHAR},
+			#{mil_yn, jdbcType=VARCHAR},	#{mil_type, jdbcType=VARCHAR}, #{mil_level, jdbcType=VARCHAR}, #{mil_startdate, jdbcType=VARCHAR}, #{mil_enddate, jdbcType=VARCHAR}, 
+			#{kosa_reg_yn, jdbcType=VARCHAR}, #{kosa_class_code, jdbcType=VARCHAR}, #{join_day, jdbcType=VARCHAR}, #{retire_day, jdbcType=VARCHAR}, #{cmp_reg_no, jdbcType=VARCHAR},
+			#{crm_name, jdbcType=VARCHAR}, #{self_intro, jdbcType=VARCHAR}
+			)	
 	</insert>
 	
 	<!--검색 상황:
@@ -130,7 +135,7 @@
 				and put_yn = #{put_yn}
 				</if>
 				<if test="job_rank !=null and job_rank !=''">
-				and job_rank = #{job_rank}
+				and pos_gbn_code = #{pos_gbn_code}
 				</if>
 				<if test="join_day !=null and join_day !=''">
 				and join_day = #{join_day}
@@ -159,38 +164,90 @@
 		UPDATE insa 
 		SET
 		name = #{name},
-		eng_name = #{eng_name},
 		id = #{id},
 		pwd = #{pwd},
-		phone = #{phone},
 		hp = #{hp},
-		reg_no = #{reg_no},
-		years = #{years},
-		email = #{email},
-		job_type = #{job_type},
-		sex = #{sex},
-		zip = #{zip},
-		addr1 = #{addr1},
-		addr2 = #{addr2},
-		job_rank = #{job_rank},
-		dept_code = #{dept_code},
-		salary = #{salary},
-		gart_level = #{gart_level},
-		put_yn = #{put_yn},
-		mil_yn = #{mil_yn},
-		mil_type = #{mil_type},
-		mil_level = #{mil_level},
-		mil_startdate =#{mil_startdate},
-		mil_enddate = #{mil_enddate},
-		kosa_reg_yn = #{kosa_reg_yn},
-		kosa_class_code = #{kosa_class_code},
-		join_day = #{join_day},
-		retire_day = #{retire_day},
-		cmp_reg_no = #{cmp_reg_no},
-		crm_name = #{crm_name},
-		self_intro = #{self_intro}
+		reg_no = #{reg_no}
+		<if test="eng_name !=null and eng_name !=''">
+		,eng_name = #{eng_name, jdbcType=VARCHAR}
+		</if>
+		<if test="phone !=null and phone !=''">
+		,phone = #{phone, jdbcType=VARCHAR}
+				</if>
+		<if test="years !=null and years !=''">
+		,years = #{years, jdbcType=VARCHAR}
+				</if>
+		<if test="email !=null and email !=''">
+		,email = #{email, jdbcType=VARCHAR}
+				</if>
+		<if test="job_type !=null and job_type !=''">
+		,job_type = #{job_type, jdbcType=VARCHAR}
+				</if>
+		<if test="sex !=null and sex !=''">
+		,sex = #{sex, jdbcType=VARCHAR}
+				</if>
+		<if test="zip !=null and zip !=''">
+		,zip = #{zip, jdbcType=VARCHAR}
+				</if>
+		<if test="addr1 !=null and addr1 !=''">
+		,addr1 = #{addr1, jdbcType=VARCHAR}
+				</if>
+		<if test="addr2 !=null and addr2 !=''">
+		,addr2 = #{addr2, jdbcType=VARCHAR}
+				</if>
+		<if test="pos_gbn_code !=null and pos_gbn_code !=''">
+		,pos_gbn_code = #{pos_gbn_code, jdbcType=VARCHAR}
+				</if>
+		<if test="dept_code !=null and dept_code !=''">
+		,dept_code = #{dept_code, jdbcType=VARCHAR}
+				</if>
+		<if test="salary !=null and salary !=''">
+		,salary = #{salary, jdbcType=VARCHAR}
+				</if>
+		<if test="gart_level !=null and gart_level !=''">
+		,gart_level = #{gart_level, jdbcType=VARCHAR}
+				</if>
+		<if test="put_yn !=null and put_yn !=''">
+		,put_yn = #{put_yn, jdbcType=VARCHAR}
+				</if>
+		<if test="mil_yn !=null and mil_yn !=''">
+		,mil_yn = #{mil_yn, jdbcType=VARCHAR}
+				</if>
+		<if test="mil_type !=null and mil_type !=''">
+		,mil_type = #{mil_type, jdbcType=VARCHAR}
+				</if>
+		<if test="mil_level !=null and mil_level !=''">
+		,mil_level = #{mil_level, jdbcType=VARCHAR}
+				</if>
+		<if test="mil_startdate !=null and mil_startdate !=''">
+		,mil_startdate =#{mil_startdate, jdbcType=VARCHAR}
+				</if>
+		<if test="mil_enddate !=null and mil_enddate !=''">
+		,mil_enddate = #{mil_enddate, jdbcType=VARCHAR}
+				</if>
+		<if test="kosa_reg_yn !=null and kosa_reg_yn !=''">
+		,kosa_reg_yn = #{kosa_reg_yn, jdbcType=VARCHAR}
+				</if>
+		<if test="kosa_class_code !=null and kosa_class_code !=''">
+		,kosa_class_code = #{kosa_class_code, jdbcType=VARCHAR}
+				</if>
+		<if test="join_day !=null and join_day !=''">
+		,join_day = #{join_day, jdbcType=VARCHAR}
+				</if>
+		<if test="retire_day !=null and retire_day !=''">
+		,retire_day = #{retire_day, jdbcType=VARCHAR}
+				</if>
+		<if test="cmp_reg_no !=null and cmp_reg_no !=''">
+		,cmp_reg_no = #{cmp_reg_no, jdbcType=VARCHAR}
+				</if>
+		<if test="crm_name !=null and crm_name !=''">
+		,crm_name = #{crm_name, jdbcType=VARCHAR}
+		</if>
+		<if test="self_intro !=null and self_intro !=''">
+		,self_intro = #{self_intro, jdbcType=VARCHAR}
+		</if>
 		WHERE
-		sabun = #{sabun]
+		sabun = #{sabun}
 	</update>
 	
 </mapper>

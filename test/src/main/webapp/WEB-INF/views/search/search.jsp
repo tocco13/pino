@@ -57,7 +57,7 @@
 		<select class="emprank" id="emprank" name="emprank">
 			<option value="">(선택)</option>
 <c:forEach var="jobrank" items="${jobrank}">
-				<option value="${jobrank.code}">${jobrank.job_rank}</option>
+				<option value="${jobrank.pos_gbn_code}">${jobrank.pos_gbn_code}</option>
 </c:forEach>
 		</select>
 		<label class="empindate" for="join_day">입사일자</label>
@@ -68,7 +68,7 @@
 		<select class="jobtypebox" id="jobtypebox" name="job_type">
 			<option value="">(선택)</option>
 <c:forEach var="jtlist" items="${jobtype}">
-				<option value="${jtlist.code}">${jtlist.job_type}</option>
+				<option value="${jtlist.job_type}">${jtlist.job_type}</option>
 </c:forEach>
 		</select>	
 	</div>
@@ -92,16 +92,7 @@
 			</tr>
 
 			<tr class="searchresult" id="searchresult">
-			<c:if test="${empty list }">
 				<th colspan="9">검색된 데이터가 없습니다</th>
-			</c:if>
-			<c:if test="${not empty list}">
-				<c:forEach var="info" items="${list}">
-					<th>${info.sabun}</th>
-					<th>${info.name}</th>
-					<th>${info.reg_no}</th>
-				</c:forEach>
-			</c:if>
 			</tr>
 		</table>
 	</div>

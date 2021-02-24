@@ -36,10 +36,5 @@ function check(){
 		document.fields.empsabun.focus();
 		return false();
 	}
-	if(!document.fields.empkrname.value){
-		alert("이름이 비었습니다.");
-		document.fields.empkrname.focus();
-		return false();
-	}
 	
 };

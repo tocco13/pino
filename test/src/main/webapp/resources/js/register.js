@@ -1,39 +1,5 @@
 $(document).ready(function(){
- 	
- 	$.datepicker.setDefaults({
-        dateFormat: 'yy-mm-dd',	//날짜 포맷이다. 보통 yy-mm-dd 를 많이 사용하는것 같다.
-        prevText: '이전 달',	// 마우스 오버시 이전달 텍스트
-        nextText: '다음 달',	// 마우스 오버시 다음달 텍스트
-        closeText: '닫기', // 닫기 버튼 텍스트 변경
-        currentText: '', // 오늘 텍스트 변경
-        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],	//한글 캘린더중 월 표시를 위한 부분
-        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],	//한글 캘린더 중 월 표시를 위한 부분
-        dayNames: ['일', '월', '화', '수', '목', '금', '토'],	//한글 캘린더 요일 표시 부분
-        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],	//한글 요일 표시 부분
-        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],	// 한글 요일 표시 부분
-        showMonthAfterYear: true,	// true : 년 월  false : 월 년 순으로 보여줌
-        yearSuffix: '년',	//
-        showButtonPanel: true,	// 오늘로 가는 버튼과 달력 닫기 버튼 보기 옵션
- 	    buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-        buttonImageOnly: true
-    });
- 	
- 	$(function(){
- 		$("#datepicker").datepicker();
- 	});
- 	
- 	$(function(){
- 		$("#datepicker2").datepicker();
- 	});
- 			
- 	$(function(){
- 		$("#datepicker3").datepicker();
- 	});
- 			
- 	$(function(){
- 		$("#datepicker4").datepicker();
- 	});
- 	
+ 	 	
  	$("#empkrname").keyup(function(event){
  		if(!(event.keyCode >= 37 && event.keyCode <=40)) {
  			var inputVal = $(this).val();
@@ -109,45 +75,6 @@ $(document).ready(function(){
  	$('#uploadbutton').click(function(){
  		$('#profilepic').click();
  	});
- 		
- 	$('#empsalary').on('keyup', function(event){
- 	
- 		var salNum = /^[0-9]*$/;
- 		var temp = $('#empsalary').val();
- 		if(!salNum.test(temp)){
- 			$('#empsalary').val(temp.replace(/[^0-9]/g,""));
- 		}
- 		
- 		//input을 사용자가 선택했고 내용이 
- 		//공백이 아니면 종료
- 		var select = window.getSelection().toString();
- 		if (select !== ''){
- 			return;
- 		}
- 		
- 		//keyup이벤트가 방향키인 경우 그대로 종료
- 		if($.inArray(event.keyCode,[38,40,37,39]) !== -1){
- 			return;
- 		}
- 		
- 		//이벤트 발생시킨 this element를 변수에 담고
- 		//변수값을 다시 input에 담는다
- 		var $this = $('#empsalary');
- 		var input = $this.val();
- 		
- 		//정규식 사용해서 특수문자제거
- 		var input = 
- 		input.replace(/[\D\s\._\-]+/g,"");
- 		
- 		//숫자로 변환
- 		input = input ? parseInt(input, 10) : 0;
- 		
- 		//toLocaleString으로 천단위로 쉼표추가
- 		$this.val(function(){
- 			return (input === 0 ) ? "" : 
- 			input.toLocaleString("en-US");
- 		});
- 	});
  	
  	$('#empmailprovider').change(function(){
  		var str = $('#empemail').val();
@@ -193,8 +120,17 @@ $(document).ready(function(){
 		$('#fpwd').val(emppw);
 		$('#femail').val(email);
 		
+		var salary = $('#empsalary').val();
+		if(salary == "" || salary == null){
+			salary = 0;
+		} else {
+			salary = parseInt(salary.replace(/\,/g,''), 10);
+		}
+		$('#fixedsalary').val(salary);
+		
 		$('#fields').submit();
  	});
+ 	
  	
 });
 
@@ -255,4 +191,19 @@ function showAge(){
 		}
 	}
 	document.getElementById("empyear").value = age;
+}
+
+// 연봉 입력시 콤마찍기
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+//콤마풀기
+function uncomma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
+//값 입력시 콤마찍기
+function inputNumberFormat(obj) {
+    obj.value = comma(uncomma(obj.value));
 }
