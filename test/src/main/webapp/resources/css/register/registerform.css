@@ -1,0 +1,385 @@
+@charset "UTF-8";
+
+
+.fields{
+	display: grid;
+	grid-template-columns: repeat(13, auto);
+	grid-template-rows: repeat(11, auto);
+	column-gap: 20px;
+	row-gap: 5px;
+	padding: 30px;
+	margin-top: 50px;
+}
+
+.fields > label {
+	text-align: center;
+	width: 110px;
+}
+
+.profilepic {
+	grid-column: 1/6;
+	grid-row: 1/6;
+	justify-self: center;
+}
+/*  *//*  */
+.empno {
+	grid-column: 7;
+	grid-row: 1;
+}
+.empnum {
+	grid-column: 8/9;
+	grid-row: 1;
+}
+
+.empname {
+	grid-column: 9;
+	grid-row: 1;
+}
+.empkrname {
+	grid-column: 10/11;
+	grid-row: 1;
+}
+
+.empname2 {
+	grid-column: 11;
+	grid-row: 1;
+}
+.empenname{
+	grid-column: 12/13;
+	grid-row: 1;
+}
+/*  */
+.empiden {
+	grid-column: 7;
+	grid-row: 2;
+}
+.empid{
+	grid-column: 8/9;
+	grid-row: 2;
+}
+.emppass {
+	grid-column: 9;
+	grid-row: 2;
+}
+.emppw{
+	grid-column: 10/11;
+	grid-row: 2;
+}
+.emppass2{
+	grid-column: 11;
+	grid-row: 2;
+}
+.emppwcheck{
+	grid-column: 12/13;
+	grid-row: 2;
+}
+/*  *//*  */
+.empphone {
+	grid-column: 7;
+	grid-row: 3;
+}
+.emptel{
+	grid-column: 8/9;
+	grid-row: 3;
+}
+.empmob{
+	grid-column: 9;
+	grid-row: 3;
+}
+.empmobile{
+	grid-column: 10/11;
+	grid-row: 3;
+}
+.emprrn {
+	grid-column: 11;
+	grid-row: 3;
+}
+.empjoomin{
+	grid-column: 12/13;
+	grid-row: 3;
+}
+/*  *//*  */
+.empage {
+	grid-column: 7;
+	grid-row: 4;
+}
+.empyear{
+	grid-column: 8/9;
+	grid-row: 4;
+}
+.empeadd {
+	grid-column: 9;
+	grid-row: 4;
+}
+
+.emaildiv {
+	grid-column: 10;
+	grid-row: 4;
+}
+
+.emaildiv > .empemail, .empmailprovider {
+	width: 100px !important;
+}
+
+
+.empjt {
+	grid-column: 11;
+	grid-row: 4;
+}
+
+.jobandsex{
+	grid-column: 12/13;
+	grid-row: 4;
+}
+
+.jobandsex > .empjobtypeselect {
+	width: 95px !important;
+}
+.jobandsex > .empgen {
+	width: 70px !important;
+}
+
+.jobandsex > .empgenselect {
+	width: 70px !important;
+}
+/*  *//*  */
+.empadd {
+	grid-column: 7;
+	grid-row: 5;
+}
+.field14 {
+	grid-column: 8;
+	grid-row: 5;
+}
+.field14>input {
+	width: 75px !important;
+	margin-right: 30px;
+}
+
+.empaddsearch{
+	grid-column: 9/11;
+	grid-row: 5;
+	width: 100% !important;
+}
+
+.empaddspec{
+	grid-column: 11/13;
+	grid-row: 5;
+	width: 100% !important;
+}
+/*  */
+.uploadbutton{
+	grid-column: 1/6;
+	grid-row: 6;
+	width: 100px;
+	justify-self: center;
+}
+.emprank {
+	grid-column: 7;
+	grid-row: 6;
+}
+.emprankselect{
+	grid-column: 8/9;
+	grid-row: 6;
+	width: 100%;
+}
+
+.empdept{
+	grid-column: 9;
+	grid-row: 6;
+}
+.empdeptselect{
+	grid-column: 10/11;
+	grid-row: 6;
+}
+
+.empsal {
+	grid-column: 11;
+	grid-row: 6;
+}
+.empsalary {
+	grid-column: 12/13;
+	grid-row: 6;
+}
+/*  *//*  *//*  *//*  *//*  *//*  *//*  */
+.empstatus {
+	grid-column: 1;
+	grid-row: 7;
+}
+.field20{
+	grid-column: 2/3;
+	grid-row: 7;
+}
+.field20>select{
+	width: 200px;
+}
+.emplvl{
+	grid-column: 7;
+	grid-row: 7;
+}
+.field21{
+	grid-column: 8/9;
+	grid-row: 7;
+}
+.field21>select{
+	width: 200px;
+}
+.empins{
+	grid-column: 9;
+	grid-row: 7;
+}
+.field22{
+	grid-column: 10/11;
+	grid-row: 7;
+}
+.field22>select{
+	width: 200px;
+}
+.empmilstat{
+	grid-column: 11;
+	grid-row: 7;
+}
+.field23{
+	grid-column: 12/13;
+	grid-row: 7;
+}
+.field23>select{
+	width: 200px;
+}
+/*  *//*  *//*  *//*  *//*  *//*  *//*  */
+.milt {
+	grid-column: 1;
+	grid-row: 8;
+}
+.field24{
+	grid-column: 2/3;
+	grid-row: 8;
+}
+.field24>select{
+	width: 200px;
+}
+.milr{
+	grid-column: 7;
+	grid-row: 8;
+}
+.field25{
+	grid-column: 8/9;
+	grid-row: 8;
+}
+.field25>select{
+	width: 200px;
+}
+.milindate{
+	grid-column: 9;
+	grid-row: 8;
+}
+.field26{
+	grid-column: 10/11;
+	grid-row: 8;
+}
+.miloutdate{
+	grid-column: 11;
+	grid-row: 8;
+}
+.field27{
+	grid-column: 12/13;
+	grid-row: 8;
+}
+/*  *//*  *//*  *//*  *//*  *//*  *//*  */
+.kosa {
+	grid-column: 1;
+	grid-row: 9;
+}
+.field28{
+	grid-column: 2/3;
+	grid-row: 9;
+}
+.field28>select{
+	width: 200px;
+}
+.kosa2{
+	grid-column: 7;
+	grid-row: 9;
+}
+.field29{
+	grid-column: 8/9;
+	grid-row: 9;
+}
+.field29>select{
+	width: 200px;
+}
+.empindate{
+	grid-column: 9;
+	grid-row: 9;
+}
+.field30{
+	grid-column: 10/11;
+	grid-row: 9;
+}
+.empoutdate{
+	grid-column: 11;
+	grid-row: 9;
+}
+.field31{
+	grid-column: 12/13;
+	grid-row: 9;
+}
+/*  *//*  *//*  *//*  *//*  *//*  *//*  */
+.business{
+	grid-column: 1;
+	grid-row: 10;
+}
+.field32{
+	grid-column: 2/3;
+	grid-row: 10;
+}
+.business2{
+	grid-column: 7;
+	grid-row: 10;
+}
+.field33{
+	grid-column: 8/9;
+	grid-row: 10;
+}
+.business3{
+	grid-column: 9;
+	grid-row: 10;
+}
+.field34{
+	grid-column: 10/11;
+	grid-row: 10;
+}
+.field35{
+	grid-column: 11/13;
+	grid-row:10;
+}
+.field35> .uploadcertbtn, .previewcertbtn{
+	width: 45%;
+}
+/*  *//*  *//*  *//*  *//*  *//*  *//*  */
+.intro{
+	grid-column: 1;
+	grid-row: 11;
+}
+.field36{
+	grid-column: 2/9;
+	grid-row: 11;
+}
+.field36 > textarea {
+	width: 100%;
+}
+.resume{
+	grid-column: 9;
+	grid-row: 11;
+}
+.field37{
+	grid-column: 10/11;
+	grid-row: 11;
+}
+.field38{
+	grid-column: 11/13;
+	grid-row: 11;
+}
+.field38> .ruploadbtn, .rpreviewbtn{
+	width: 45%;
+}

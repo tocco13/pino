@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN//"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iSQL">
+
+	<select id="getEmailProvider" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as emailprovider
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 4
+	</select>
+	
+	<select id="getJobType" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as job_type
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 5
+	</select>
+	
+	<select id="getJobRank" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as job_rank
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 1
+	</select>
+	
+	<select id="getDept" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as dept
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 6
+	</select>
+	
+	<select id="getMilRank" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as mil_level
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 2
+	</select>
+	
+	<select id="getMilType" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as mil_type
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 3
+	</select>
+	
+	<select id="getKosaClass" resultType="iVO" parameterType="String">
+		SELECT
+			code, name as kosa_class_code
+		FROM 
+			insa_com
+		WHERE 
+			gubun = 7
+	</select>
+	
+	<select id="getId" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			insa
+		WHERE
+			id=#{id}
+	</select>
+	
+	<insert id="addEmp" parameterType="iVO">
+		INSERT INTO insa (sabun, name, eng_name, id, pwd, phone, hp, reg_no, years, email, job_type, 
+		sex, zip, addr1, addr2, job_rank, dept_code, salary, gart_level, put_yn, 
+		mil_yn, 
+		mil_type, 
+		mil_level, 
+		mil_startdate,
+		mil_enddate, 
+		kosa_reg_yn, 
+		kosa_class_code, 
+		join_day, retire_day, 
+		cmp_reg_no, crm_name, self_intro)
+		VALUES (
+			max(sabun)+1,
+			#{name}, 
+			#{eng_name}, 
+			#{id}, #{pwd}, #{phone}, #{hp}, #{reg_no}, #{years}, #{email}, #{job_type},
+			#{sex}, #{zip}, #{addr1}, #{addr2}, #{job_rank}, #{dept_code}, #{salary}, #{gart_level}, #{put_yn},
+			#{mil_yn},	#{mil_type}, #{mil_level}, #{mil_startdate}, #{mil_enddate}, 
+			#{kosa_reg_yn}, #{kosa_class_code}, #{join_day}, #{retire_day}, #{cmp_reg_no}, #{crm_name}, #{self_intro})	
+	</insert>
+	
+	<!--검색 상황:
+	사번검색
+	성명검색
+	입사구분
+	투입여부
+	직위
+	입사일자
+	퇴사일자
+	직종
+	  -->
+	<select id="searchEmp" parameterType="java.util.HashMap" resultType="iVO">
+		SELECT *
+		FROM 
+			(SELECT rownum as rnum, q.* 
+			FROM 
+				(SELECT *
+				FROM insa
+				WHERE 
+				1=1
+				<if test="sabun !=null and sabun !=''">
+				and sabun = #{sabun}
+				</if>
+				<if test="name !=null and name !=''">
+				and name = #{name}
+				</if>
+				<if test="join_yn !=null and join_yn !=''">
+				and current_yn = #{join_yn}
+				</if>
+				<if test="put_yn !=null and put_yn !=''">
+				and put_yn = #{put_yn}
+				</if>
+				<if test="job_rank !=null and job_rank !=''">
+				and job_rank = #{job_rank}
+				</if>
+				<if test="join_day !=null and join_day !=''">
+				and join_day = #{join_day}
+				</if>
+				<if test="retire_day !=null and retire_day !=''">
+				and retire_day = #{retire_day}
+				</if>
+				<if test="job_type !=null and job_type !=''">
+				and job_type = #{job_type}
+				</if>
+				ORDER BY
+				sabun asc
+				) q
+			)w		
+	</select>
+	
+	<!--조회에서 세부조회로  -->
+	<select id="empDetail" parameterType="string" resultType="iVO">
+		SELECT *
+		FROM insa
+		WHERE
+		name = #{name}
+	</select>
+	
+	<update id="empUpdate" parameterType="iVO">
+		UPDATE insa 
+		SET
+		name = #{name},
+		eng_name = #{eng_name},
+		id = #{id},
+		pwd = #{pwd},
+		phone = #{phone},
+		hp = #{hp},
+		reg_no = #{reg_no},
+		years = #{years},
+		email = #{email},
+		job_type = #{job_type},
+		sex = #{sex},
+		zip = #{zip},
+		addr1 = #{addr1},
+		addr2 = #{addr2},
+		job_rank = #{job_rank},
+		dept_code = #{dept_code},
+		salary = #{salary},
+		gart_level = #{gart_level},
+		put_yn = #{put_yn},
+		mil_yn = #{mil_yn},
+		mil_type = #{mil_type},
+		mil_level = #{mil_level},
+		mil_startdate =#{mil_startdate},
+		mil_enddate = #{mil_enddate},
+		kosa_reg_yn = #{kosa_reg_yn},
+		kosa_class_code = #{kosa_class_code},
+		join_day = #{join_day},
+		retire_day = #{retire_day},
+		cmp_reg_no = #{cmp_reg_no},
+		crm_name = #{crm_name},
+		self_intro = #{self_intro}
+		WHERE
+		sabun = #{sabun]
+	</update>
+	
+</mapper>

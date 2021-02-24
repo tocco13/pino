@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+
+header {
+	background-color: #bfefff;
+	height: auto;
+}
+
+.tophead {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.head {
+	display: inline-block;
+	margin-right: 80%;
+}
+
+.menu {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+a{
+	text-decoration: none;
+	margin-right: 5px;
+}
+
+.empdetail {
+	margin-left: 40px;
+}
+
+.profilepic {
+	width: 175px;
+	height: 180px;
+	border: 1px solid black;
+}
