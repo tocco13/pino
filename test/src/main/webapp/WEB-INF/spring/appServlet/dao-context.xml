@@ -12,5 +12,8 @@
 						
 	<bean id="rDao" class="com.pinosoft.test.dao.RegisterDao"/>
 	<bean id="sDao" class="com.pinosoft.test.dao.SearchDao"/>
+	<bean id="fDao" class="com.pinosoft.test.dao.FileDao"/>
+	<bean id="fbDao" class="com.pinosoft.test.dao.FileBDao"/>
+	<bean id="frDao" class="com.pinosoft.test.dao.FileRDao"/>
 	
 </beans>

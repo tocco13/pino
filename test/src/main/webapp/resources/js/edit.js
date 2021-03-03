@@ -102,37 +102,115 @@ $(document).ready(function(){
  	});
  	
  	$('#editbtn').click(function(){
-		var krname = $('#empkrname').val();
+		event.preventDefault();
+ 		
+ 		var krname = $('#empkrname').val();
  		var empid = $('#empid').val();
  		var emppw = $('#emppw').val();
  		var emphp = $('#empmobile').val();
  		var empjoomin = $('#empjoomin').val();
  		var email = $('#empemailfull').val();
-
-		$('#fname').val(krname);
-		$('#fregno').val(empjoomin);
-		$('#fhp').val(emphp);
-		$('#fid').val(empid);
-		$('#fpwd').val(emppw);
-		$('#femail').val(email);
+ 		if(krname =='' || krname== null ||
+ 		empid == '' || empid == null ||
+ 		emppw == '' || emppw == null ||
+ 		emphp == '' || emphp == null ||
+ 		empjoomin == '' || empjoomin == null ||
+ 		email == '' || email == null){
+ 			alert('필수항목이 비었습니다.');
+ 			return;
+ 		}		
 		
-		var salary = $('#empsalary').val();
-		alert(salary);
-		if(salary == "" || salary == null){
-			salary = 0;
-		} else {
-			salary = parseInt(salary.replace(/\,/g,''), 10);
-			alert(salary);
-		}
-		$('#fixedsalary').val(salary);
-		
-		var sabun = $('#empno').val();
-		$('#realempno').val(sabun);
-		
- 		$('#fields').attr('action','/edit/editproc.pino');
- 		$('#fields').submit();
- 	});
- 			
+		if(confirm("등록하시겠습니까?")) {
+			var salary = $('#empsalary').val();
+			if(salary == "" || salary == null){
+				salary = 0;
+			} else {
+				salary = parseInt(salary.replace(/\,/g,''), 10);
+			}
+			$('#fixedsalary').val(salary);
+			
+			//사진 DB에 올리기 ajax
+			var tmp = $('#empid').val();
+	 		$('#fid2').val(tmp);
+			var data = new FormData($('#pic')[0]);
+			$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/upload.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+	 		});
+	 		
+	 		//사업자등록증 DB에 올리기 ajax
+	 		var tmp = $('#empid').val();
+	 		$('#fid3').val(tmp);
+	 		var data = new FormData($('#bcertform')[0]);
+	 		$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/uploadb.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(xhr, status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+		 	});
+		 	
+		 	//이력서 DB올리기 ajax
+			var tmp = $('#empid').val();
+	 		$('#fid4').val(tmp);
+	 		var data = new FormData($('#resumeform')[0]);
+			$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/uploadr.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(xhr, status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+		 	});
+		 	
+			$('#fields').attr('action', '/edit/editproc.pino');
+			$('#fields').submit();
+			
+	 	} else {
+	 		return;
+	 	}
+	 });
+	 
+	 $('#deletebtn').click(function(){
+	 	if(confirm("삭제하시겠습니까?")){
+	 		var tmp = $('#empno').val();
+	 		alert(tmp);
+	 		$('#fields').attr('action', '/edit/deleteProc.pino');
+	 		$('#fields').submit();
+	 	} else {
+	 		alert('삭제가 취소되었습니다');
+	 		return;
+	 	}
+	 });
 });
 
 function execDaumPostCode() {
@@ -161,6 +239,42 @@ function execDaumPostCode() {
     }).open();
     });
 }
+
+// 업로드 이미지 미리보기
+function setThumbnail(event, thumbnail_src) {      
+        var reader = new FileReader();	
+        reader.onload = function(event) {	     
+          var thumbnail = document.getElementById(thumbnail_src);
+          thumbnail.setAttribute("src", event.target.result);
+        };
+        reader.readAsDataURL(event.target.files[0]);        
+}
+
+//모달에 이미지 심기
+function preview(event, imgid){		
+
+ 		var reader = new FileReader();
+
+ 		reader.onload = function(event) {
+
+ 			var tag = document.getElementById(imgid);
+ 
+ 			tag.setAttribute("src", event.target.result);
+ 		}
+ 		 reader.readAsDataURL(event.target.files[0]);    
+}
+
+//모달 띄워 이미지 보기
+function openpreview(event, modalid){
+ 		document.getElementById(modalid).classList.remove("dnone");
+ 		document.getElementById(modalid).classList.add("dblock");
+}
+
+function closepreview(event, modalid){
+		document.getElementById(modalid).classList.remove("dblock");
+ 		document.getElementById(modalid).classList.add("dnone");
+}
+
 
 function showAge(){
 	var age= 0;
@@ -192,6 +306,16 @@ function showAge(){
 		}
 	}
 	document.getElementById("empyear").value = age;
+}
+
+function showGen(){
+	var joomin = document.getElementById("empjoomin2").value;
+	//첫 숫자가 1,3이면 남자, 2,4면 여자
+	if(joomin.length >= 8){
+		var gen = joomin.substr(7,1);
+		if(gen == 1||gen == 3) document.getElementById("empgenselect").options[1].selected = true;
+		if(gen == 2||gen == 4) document.getElementById("empgenselect").options[2].selected = true;
+	}
 }
 
 // 연봉 입력시 콤마찍기

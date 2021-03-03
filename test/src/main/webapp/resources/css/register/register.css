@@ -36,3 +36,11 @@ a{
 	height: 180px;
 	border: 1px solid black;
 }
+
+.dnone {
+	display: none;
+}
+
+.dblock {
+	display: block;
+}

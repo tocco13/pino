@@ -35,9 +35,9 @@
 	<form class="fields" id="fields" name="fields" action="/search/search2.pino" method="POST">
 	<div class="search">
 		<label class="empno" for="empsabun">사번 </label>
-		<input type="text" class="empsabun" name="empsabun" id="empsabun">
+		<input type="text" class="fieldinput empsabun" name="empsabun" id="empsabun">
 		<label class="empname" for="empkrname">성명</label>
-		<input type="text" class="empkrname" name="empkrname" id="empkrname">
+		<input type="text" class="fieldinput empkrname" name="empkrname" id="empkrname">
 		<label class="empstatus" for="empstate">입사구분</label>
 		<select class="empstate" id="empstate" name="empstate">
 			<option value="">(선택)</option>
@@ -60,9 +60,9 @@
 </c:forEach>
 		</select>
 		<label class="empindate" for="empdatein">입사일자</label>
-		<input class="empdatein" type="text" id="datepicker" placeholder="">
+		<input class="fieldinput empdatein" type="text" id="datepicker" placeholder="">
 		<label class="empoutdate" for="empdateout">퇴사일자</label>
-		<input class="empdateout" type="text" id="datepicker2" placeholder="">
+		<input class="fieldinput empdateout" type="text" id="datepicker2" placeholder="">
 		<label class="empjobtype" for="jobtypebox">직종</label>
 		<select class="jobtypebox" id="jobtypebox" name="jobtype">
 			<option value="">(선택)</option>
@@ -72,14 +72,15 @@
 		</select>	
 	</div>
 	<div class="w3-right" style="padding-top: 25px; padding-right: 25px;">
-		<button type="button" class="searchbtn" id="searchbtn" >검색</button>
-		<button type="reset" class="reset">초기화</button>
+		<button type="button" class="searchbtn" id="searchbtn" onclick="check(event);">검색</button>
+		<button type="button" class="deletebtn" id="deletebtn">삭제</button>
 		<button type="button" class="previous">이전</button>
 	</div>
 	<div class="searchtable" style="padding-top: 80px; margin: 0px 50px 0px 50px;'">
-		<table class="headrow" id="headrow" style="width: 100%;">
-			<thead>
+		<table class="table" id="headrow" style="width: 100%;">
+			<thead class="headrow">
 			<tr>
+				<th><input type="checkbox" class="checkall" id="checkall"></th>
 				<th>사번</th>
 				<th>성명</th>
 				<th>주민번호</th>
@@ -95,12 +96,13 @@
 			<tbody>
 			<c:if test="${empty list}">
 			<tr class="searchresult" id="searchresult">
-				<td colspan="9" align="center">검색된 데이터가 없습니다</td>
+				<td colspan="10" align="center">검색된 데이터가 없습니다</td>
 			</tr>
 			</c:if>
 			<c:if test="${not empty list}">
 				<c:forEach var="info" items="${list}">
 					<tr class="searchresult" id="searchresult">
+						<td align="center" id="deletetag"><input type="checkbox" class="deletecheck" id="${info.sabun}" value="${info.sabun}"></td>
 						<td align="center" id="sabuntag">${info.sabun}</td>
 						<td align="center" id="nametag" align="center">${info.name}</td>
 						<td align="center" id="regtag">${info.reg_no}</td>
@@ -112,17 +114,56 @@
 						<td align="center" id="salarytag">${info.salary}</td>
 						<td align="center">
 						<input type="button" class="editbtn" id="editbtn" value="수정"/>
-						<input type="button" class="deletebtn" id="deletebtn" value="삭제"/>
 						</td>
 					</tr>
 				</c:forEach>
 			</c:if>
+				<tr align="center">
+				<td colspan="11" align="center">
+ 				<c:if test="${paging.startPage != 1 }">
+					<a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a>
+				</c:if>
+				<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
+					<c:choose>
+						<c:when test="${p == paging.nowPage }">
+							<b>${p }</b>
+						</c:when>
+						<c:when test="${p != paging.nowPage }">
+							<a href="/search/search2.pino?nowPage=${p }&cntPerPage=${paging.cntPerPage }">${p }</a>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${paging.endPage != paging.lastPage }">
+					<a href="/search/search2.pino?nowPage=${paging.endPage + 1 }&cntPerPage=${paging.cntPerPage }">&gt;</a>
+				</c:if>
+				</td>
+				</tr>
 			</tbody>
+<%-- 			<tfoot>
+				<tr>
+ 				<c:if test="${paging.startPage != 1 }">
+					<a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a>
+				</c:if>
+				<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
+					<c:choose>
+						<c:when test="${p == paging.nowPage }">
+							<b>${p }</b>
+						</c:when>
+						<c:when test="${p != paging.nowPage }">
+							<a href="/search/search2.pino?nowPage=${p }&cntPerPage=${paging.cntPerPage }">${p }</a>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${paging.endPage != paging.lastPage }">
+					<a href="/search/search2.pino?nowPage=${paging.endPage + 1 }&cntPerPage=${paging.cntPerPage }">&gt;</a>
+				</c:if>
+				</tr>
+			</tfoot> --%>
 		</table>
 	</div>
 	</form>
 	<form id="editform" action="/edit/edit.pino" method="post">
-			<input type="hidden" id="nameparam" name="nameparam" value="">
+			<input type="hidden" id="sabunparam" name="sabunparam" value="">
 	</form>
 	</section>
 </body>

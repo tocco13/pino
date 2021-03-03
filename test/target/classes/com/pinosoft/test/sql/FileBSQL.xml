@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN//"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fbSQL">
+
+	<insert id="bfileUpload" parameterType="fbVO">
+		INSERT INTO 
+		bfiles(
+		bseq
+		<if test="bid != null and bid !=''">
+		,bid
+		</if>
+		<if test="bfile_type !=null and bfile_type!=''">
+		,bfile_type
+		</if>
+		<if test="bfile_path != null and bfile_path !=''">
+		,bfile_path
+		</if>
+		<if test="borg_name != null and borg_name !=''">
+		,borg_name
+		</if>
+		<if test="bsave_name != null and borg_name !=''">
+		,bsave_name
+		</if>
+		<if test="bfile_name !=null and bfile_name!=''">
+		,bfile_name
+		</if>
+		<if test="bfile_size!=null and bfile_size!=''">
+		,bfile_size
+		</if>
+		)
+		
+		VALUES
+		(
+		(select nvl(max(bseq)+1,1) from bfiles)
+		<if test="bid != null and bid !=''">
+		,#{bid}
+		</if>
+		<if test="bfile_type!=null and bfile_type!=''">
+		,#{bfile_type}
+		</if>
+		<if test="bfile_path != null and bfile_path !=''">
+		,#{bfile_path}
+		</if>
+		<if test="borg_name != null and borg_name !=''">
+		,#{borg_name}
+		</if>
+		<if test="bsave_name != null and borg_name !=''">
+		,#{bsave_name}
+		</if>
+		<if test="bfile_name !=null and bfile_name!=''">
+		,#{bfile_name}
+		</if>
+		<if test="bfile_size!=null and bfile_size!=''">
+		,#{bfile_size}
+		</if>
+		)
+	</insert>
+	
+	<select id="bcheckFileName" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			bfiles
+		WHERE
+			bfile_name = #{bfile_name}
+	</select>
+	
+	<select id="bcheckOld" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			bfiles
+		WHERE
+			bid = #{bid}
+	</select>
+	
+	<delete id="bdeleteOld" parameterType="String">
+		DELETE FROM bfiles
+		WHERE bid=#{bid}
+	</delete>
+	
+	<select id="bgetImage" parameterType="String" resultType="String">
+		SELECT save_name
+		FROM bfiles
+		WHERE
+			bid = #{bid}
+	</select>
+	
+</mapper>

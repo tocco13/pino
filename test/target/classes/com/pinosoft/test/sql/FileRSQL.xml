@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN//"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="frSQL">
+
+	<insert id="rfileUpload" parameterType="frVO">
+		INSERT INTO 
+		rfiles(
+		rseq
+		<if test="rid != null and rid !=''">
+		,rid
+		</if>
+		<if test="rfile_type !=null and rfile_type!=''">
+		,rfile_type
+		</if>
+		<if test="rfile_path != null and rfile_path !=''">
+		,rfile_path
+		</if>
+		<if test="rorg_name != null and rorg_name !=''">
+		,rorg_name
+		</if>
+		<if test="rsave_name != null and rorg_name !=''">
+		,rsave_name
+		</if>
+		<if test="rfile_name !=null and rfile_name!=''">
+		,rfile_name
+		</if>
+		<if test="rfile_size!=null and rfile_size!=''">
+		,rfile_size
+		</if>
+		)
+		
+		VALUES
+		(
+		(select nvl(max(rseq)+1,1) from rfiles)
+		<if test="rid != null and rid !=''">
+		,#{rid}
+		</if>
+		<if test="rfile_type!=null and rfile_type!=''">
+		,#{rfile_type}
+		</if>
+		<if test="rfile_path != null and rfile_path !=''">
+		,#{rfile_path}
+		</if>
+		<if test="rorg_name != null and rorg_name !=''">
+		,#{rorg_name}
+		</if>
+		<if test="rsave_name != null and rorg_name !=''">
+		,#{rsave_name}
+		</if>
+		<if test="rfile_name !=null and rfile_name!=''">
+		,#{rfile_name}
+		</if>
+		<if test="rfile_size!=null and rfile_size!=''">
+		,#{rfile_size}
+		</if>
+		)
+	</insert>
+	
+	<select id="rcheckFileName" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			rfiles
+		WHERE
+			rfile_name = #{rfile_name}
+	</select>
+	
+	<select id="rcheckOld" parameterType="String" resultType="int">
+	SELECT 
+		count(*) as cnt
+	FROM
+		rfiles
+	WHERE
+		rid = #{rid}
+	</select>
+	
+	<delete id="rdeleteOld" parameterType="String">
+		DELETE FROM rfiles
+		WHERE rid=#{rid}
+	</delete>
+	
+	<select id="rgetImage" parameterType="String" resultType="String">
+		SELECT save_name
+		FROM rfiles
+		WHERE
+			rid = #{rid}
+	</select>
+	
+</mapper>

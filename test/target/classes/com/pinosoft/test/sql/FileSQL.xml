@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN//"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fSQL">
+	
+	<insert id="fileUpload" parameterType="fVO">
+		INSERT INTO 
+		files(
+		seq
+		<if test="id != null and id !=''">
+		,id
+		</if>
+		<if test="file_type !=null and file_type!=''">
+		,file_type
+		</if>
+		<if test="file_path != null and file_path !=''">
+		,file_path
+		</if>
+		<if test="org_name != null and org_name !=''">
+		,org_name
+		</if>
+		<if test="save_name != null and org_name !=''">
+		,save_name
+		</if>
+		<if test="file_name !=null and file_name!=''">
+		,file_name
+		</if>
+		<if test="file_size!=null and file_size!=''">
+		,file_size
+		</if>
+		)
+		
+		VALUES
+		(
+		(select nvl(max(seq)+1,1) from files)
+		<if test="id != null and id !=''">
+		,#{id}
+		</if>
+		<if test="file_type!=null and file_type!=''">
+		,#{file_type}
+		</if>
+		<if test="file_path != null and file_path !=''">
+		,#{file_path}
+		</if>
+		<if test="org_name != null and org_name !=''">
+		,#{org_name}
+		</if>
+		<if test="save_name != null and org_name !=''">
+		,#{save_name}
+		</if>
+		<if test="file_name !=null and file_name!=''">
+		,#{file_name}
+		</if>
+		<if test="file_size!=null and file_size!=''">
+		,#{file_size}
+		</if>
+		)
+	</insert>
+	
+	<select id="checkFileName" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			files
+		WHERE
+			file_name = #{file_name}
+	</select>
+	
+	<select id="checkOld" parameterType="String" resultType="int">
+		SELECT 
+			count(*) as cnt
+		FROM
+			files
+		WHERE
+			id = #{id}
+	</select>
+	
+	<delete id="deleteOld" parameterType="String">
+		DELETE FROM files
+		WHERE id=#{id}
+	</delete>
+	
+	<select id="getImage" parameterType="String" resultType="String">
+		SELECT save_name
+		FROM files
+		WHERE
+			id = #{id}
+	</select>
+	
+	<delete id="deleteFileRecord" parameterType="String">
+		DELETE FROM files
+		WHERE sabun = #{sabun}
+	</delete>
+	
+</mapper>

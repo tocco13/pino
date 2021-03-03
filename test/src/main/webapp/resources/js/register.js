@@ -1,5 +1,110 @@
 $(document).ready(function(){
  	 	
+ 	 /* 날짜 선택 - datepicker */
+	$( "#datepicker1" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년'
+	  });
+	
+	$( "#datepicker2" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년'
+	  });
+	  
+	  //입영일 전역일 비교
+	  $('#datepicker2').on("blur", function(){
+	  	if($('#datepicker1').val() != null && $('#datepicker2').val() != null){
+	  		var joinday = $('#datepicker1').val();
+	  		var retireday = $('#datepicker2').val();
+	  		
+	  		console.log("join: ", joinday);
+	  		console.log("retire: ", retireday);
+	  		
+	  		//'/'로 나눈다
+	  		var startArray = joinday.split('/');
+	  		var endArray = retireday.split('/');
+	  		
+	  		//날짜를 숫자형태의 날짜정보로 변환하여 비교
+	  		if(joinday >  retireday){
+	  			alert("퇴사일이 입사일보다 빠를 수 없습니다.");
+	  			$('#datepicker4').val("");
+	  			return false;
+	  		}
+	  	}
+	  });
+	
+	$( "#datepicker3" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년'
+	  });
+	
+	$( "#datepicker4" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년'
+	  });
+	  
+	  //입사일 퇴사일 비교
+	  $('#datepicker4').on("blur", function(){
+	  	if($('#datepicker3').val() != null && $('#datepicker4').val() != null){
+	  		var joinday = $('#datepicker3').val();
+	  		var retireday = $('#datepicker4').val();
+	  		
+	  		console.log("join: ", joinday);
+	  		console.log("retire: ", retireday);
+	  		
+	  		//'/'로 나눈다
+	  		var startArray = joinday.split('/');
+	  		var endArray = retireday.split('/');
+	  		
+	  		//날짜를 숫자형태의 날짜정보로 변환하여 비교
+	  		if(joinday >  retireday){
+	  			alert("퇴사일이 입사일보다 빠를 수 없습니다.");
+	  			$('#datepicker4').val("");
+	  			return false;
+	  		}
+	  	}
+	  });
+ 	 	
  	$("#empkrname").keyup(function(event){
  		if(!(event.keyCode >= 37 && event.keyCode <=40)) {
  			var inputVal = $(this).val();
@@ -20,7 +125,6 @@ $(document).ready(function(){
  		}
  	});
  	
- 	
  	$('#emppwcheck').focusout(function(){
  		var pw1 = $('#emppw').val();
  		var pw2 = $('#emppwcheck').val();
@@ -30,10 +134,33 @@ $(document).ready(function(){
  		} else if (pw1 !=""||pw2 !=""){
  			if (pw1 == pw2) {
  				alert('비밀번호가 일치합니다');
+ 				$('#register').removeAttr("disabled");
  			} else {
  				alert('비밀번호가 틀립니다');
+ 				$('#register').attr("disabled", "true");
  			}
  		}
+ 	});
+ 	
+ 	$('#empid').focusout(function(){
+ 		var id = $('#empid').val();
+ 		$.ajax({
+ 			type: "POST",
+ 			url: "/idCheck.pino",
+ 			data: {"id" : id},
+ 			success : function(data){
+ 				if(data > 0){
+ 				alert('중복된 아이디입니다');
+ 				$('#empid').val("");
+ 				$('#empid').focus();
+ 				} else if(data == 0) {
+ 				alert('사용가능한 아이디입니다');
+ 				return;
+ 				}
+ 			}, error : function(error){
+ 				alert('sumtingwon');
+ 			}
+ 		});
  	});
  	
  			
@@ -45,7 +172,6 @@ $(document).ready(function(){
  		$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") );
  	});
  				
- 			
  	$('#empjoomin').on('keyup', function(event){
  		var jooNum = /^[0-9]*$/;
  		var temp = $('#empjoomin').val();
@@ -60,7 +186,8 @@ $(document).ready(function(){
  			if($('#empjoomin').val().length >= 13){
  				str2 = $('#empjoomin').val().substring(6,13);
  				$('#empjoomin').val(str1+'-'+str2);
- 				$('#empjoomin2').val($('#empjoomin').val());				
+ 				$('#empjoomin2').val($('#empjoomin').val());
+ 				$('#empjoomin').val(str1+'-'+str2);
  			} else {
  				$('#empjoomin').val(str1+'-'+str2);
  				$('#empjoomin2').val($('#empjoomin').val());
@@ -71,6 +198,7 @@ $(document).ready(function(){
  		}
  			
  	});	
+
  	
  	$('#uploadbutton').click(function(){
  		$('#profilepic').click();
@@ -91,9 +219,13 @@ $(document).ready(function(){
  			$('#datepicker2').prop("disabled",false);
  		} else {
  		 	$('#miltype').prop("disabled",true);
+ 		 	$('#miltype').val("");
  			$('#milrank').prop("disabled",true);
+ 			$('#milrank').val("");
  			$('#datepicker').prop("disabled",true);
+ 			$('#datepicker').val("");
  			$('#datepicker2').prop("disabled",true);
+ 			$('#datepicker2').val("");
  		}
  	});
  	
@@ -105,32 +237,111 @@ $(document).ready(function(){
  		}
  	});
  	
- 	$('#register').click(function(){
+ 	$('#register').click(function(event){
+ 		event.preventDefault();
  		var krname = $('#empkrname').val();
  		var empid = $('#empid').val();
  		var emppw = $('#emppw').val();
  		var emphp = $('#empmobile').val();
  		var empjoomin = $('#empjoomin2').val();
  		var email = $('#empemailfull').val();
-
-		$('#fname').val(krname);
-		$('#fregno').val(empjoomin);
-		$('#fhp').val(emphp);
-		$('#fid').val(empid);
-		$('#fpwd').val(emppw);
-		$('#femail').val(email);
-		
-		var salary = $('#empsalary').val();
-		if(salary == "" || salary == null){
-			salary = 0;
+ 		if(krname =='' || krname== null ||
+ 		empid == '' || empid == null ||
+ 		emppw == '' || emppw == null ||
+ 		emphp == '' || emphp == null ||
+ 		empjoomin == '' || empjoomin == null ||
+ 		email == '' || email == null){
+ 			alert('필수항목이 비었습니다.');
+ 			return;
+ 		}
+ 		
+		if(confirm("등록하시겠습니까?"))
+		{
+			
+			$('#fname').val(krname);
+			$('#fregno').val(empjoomin);
+			$('#fhp').val(emphp);
+			$('#fid').val(empid);
+			$('#fpwd').val(emppw);
+			$('#femail').val(email);
+			
+			var salary = $('#empsalary').val();
+			if(salary == "" || salary == null){
+				salary = 0;
+			} else {
+				salary = parseInt(salary.replace(/\,/g,''), 10);
+			}
+			$('#fixedsalary').val(salary);
+			
+			//사진 DB에 올리기 ajax
+			var tmp = $('#empid').val();
+	 		$('#fid2').val(tmp);
+			var data = new FormData($('#pic')[0]);
+			$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/upload.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+	 		});
+	 		
+	 		//사업자등록증 DB에 올리기 ajax
+	 		var tmp = $('#empid').val();
+	 		$('#fid3').val(tmp);
+	 		var data = new FormData($('#bcertform')[0]);
+	 		$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/uploadb.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(xhr, status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+		 	});
+		 	
+		 	//이력서 DB올리기 ajax
+			var tmp = $('#empid').val();
+	 		$('#fid4').val(tmp);
+	 		var data = new FormData($('#resumeform')[0]);
+			$.ajax({
+	 			type: "POST",
+	 			encType: 'multipart/form-data',
+	 			url: "/uploadr.pino",
+	 			data: data,
+	 			processData: false,
+	 			contentType: false,
+	 			cache: false,
+	 			succes: function(){
+	 			},
+	 			error: function(xhr, status, error){
+	 			},
+	 			complete: function(){
+	 				console.log('컴플릿으로 빠짐');
+	 			}
+		 	});
+		 	
+			$('#fields').attr('action', '/register/registerproc.pino');
+			$('#fields').submit();
 		} else {
-			salary = parseInt(salary.replace(/\,/g,''), 10);
+			return;
 		}
-		$('#fixedsalary').val(salary);
-		
-		$('#fields').submit();
  	});
- 	
  	
 });
 
@@ -161,9 +372,60 @@ function execDaumPostCode() {
     });
 }
 
+// 업로드 이미지 미리보기
+function setThumbnail(event, thumbnail_src) {      
+        var reader = new FileReader();	
+        reader.onload = function(event) {	     
+          var thumbnail = document.getElementById(thumbnail_src);
+          thumbnail.setAttribute("src", event.target.result);
+        };
+        reader.readAsDataURL(event.target.files[0]);        
+}
+
+
+//모달에 이미지 심기
+function preview(event, imgid){	
+ 		var reader = new FileReader();
+ 		reader.onload = function(event) {
+ 			var tag = document.getElementById(imgid);
+ 			tag.setAttribute("src", event.target.result);
+ 		}
+ 		 reader.readAsDataURL(event.target.files[0]);    
+}
+
+//이미지 텍스트로
+/*
+function preview2(event, pathid){	
+ 		var reader = new FileReader();
+ 		reader.onload = function(event) {
+ 			var pathvar = document.getElementById(pathid);
+ 			pathvar.setAttribute("value", event.target.filename);
+ 		}
+ 		 reader.readAsText(event.target.files[0],"UTF-8");    
+}
+*/
+
+function showFile(input, inputid) {
+  let file = input.files[0];
+  var tmp = file.name;
+  var inputpath = document.getElementById(inputid);
+  inputpath.setAttribute("value",tmp);
+}
+
+//모달 띄워 이미지 보기
+function openpreview(event, modalid){
+ 		document.getElementById(modalid).classList.remove("dnone");
+ 		document.getElementById(modalid).classList.add("dblock");
+}
+
+function closepreview(event, modalid){
+		document.getElementById(modalid).classList.remove("dblock");
+ 		document.getElementById(modalid).classList.add("dnone");
+}
+
 function showAge(){
 	var age= 0;
-	var joomin = document.getElementById("empjoomin2").value;
+	var joomin = document.getElementById("empjoomin").value;
 	if(joomin.length >= 6){
 		var yy = joomin.substr(0,2); //생년
 		var mm = joomin.substr(2,2); //생월
@@ -193,17 +455,29 @@ function showAge(){
 	document.getElementById("empyear").value = age;
 }
 
+function showGen(){
+	var joomin = document.getElementById("empjoomin2").value;
+	//첫 숫자가 1,3이면 남자, 2,4면 여자
+	if(joomin.length >= 8){
+		var gen = joomin.substr(7,1);
+		if(gen == 1||gen == 3) document.getElementById("empgenselect").options[1].selected = true;
+		if(gen == 2||gen == 4) document.getElementById("empgenselect").options[2].selected = true;
+	}
+}
+
 // 연봉 입력시 콤마찍기
 function comma(str) {
     str = String(str);
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 }
+
 //콤마풀기
 function uncomma(str) {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
 }
+
 //값 입력시 콤마찍기
 function inputNumberFormat(obj) {
-    obj.value = comma(uncomma(obj.value));
-}
+    obj.value = comma(uncomma(obj.value));}
+    

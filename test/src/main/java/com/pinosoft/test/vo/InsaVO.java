@@ -1,6 +1,7 @@
 package com.pinosoft.test.vo;
 
 import java.sql.Date;
+import java.util.Map;
 
 public class InsaVO {
 	private int sabun; //사번 int
@@ -14,7 +15,8 @@ public class InsaVO {
 	private String hp ; //핸드폰 string
 	private String pos_gbn_code ; //직위 string
 	private String cmp_reg_no ; //사업자등록번호 string
-	private String cmp_reg_image ; //사업자등록증 이미지 string
+	private String cmp_reg_image ; //사업자등록증 이미지파일명 string
+	private String cmp_reg_imagelink; //사업자등록증 파일경로 string
 	private String sex ; //성별 string
 	private int years ; //연령 int
 	private String email ; //이메일 string
@@ -36,11 +38,15 @@ public class InsaVO {
 	private String gart_level ; //등급 string
 	private String self_intro ; // 자기소개 string
 	private String crm_name ; //업체명 string
-	private String profile ; //프로필 이미지 string
-	private String resume ; //이력서 이미지 string
+	private String profile ; //프로필 이미지파일명 string
+	private String profilelink; //프로필 파일경로 string
+	private String resume ; //이력서 이미지파일명 string
+	private String resumelink; //이력서 파일경로 string
 	private String current_yn ; //입사여부 string
 	private String emailprovider; //이메일 확장자용
 	private Date jsetDate, rsetDate;
+	
+	public InsaVO() {}
 	
 	public int getSabun() {
 		return sabun;
@@ -277,7 +283,41 @@ public class InsaVO {
 	public void setEmailprovider(String emailprovider) {
 		this.emailprovider = emailprovider;
 	}
-
+	public String getCmp_reg_imagelink() {
+		return cmp_reg_imagelink;
+	}
+	public void setCmp_reg_imagelink(String cmp_reg_imagelink) {
+		this.cmp_reg_imagelink = cmp_reg_imagelink;
+	}
+	public String getProfilelink() {
+		return profilelink;
+	}
+	public void setProfilelink(String profilelink) {
+		this.profilelink = profilelink;
+	}
+	public String getResumelink() {
+		return resumelink;
+	}
+	public void setResumelink(String resumelink) {
+		this.resumelink = resumelink;
+	}
+	public String toString1() {
+		return "InsaVO [sabun=" + sabun + ", join_day=" + join_day + ", retire_day=" + retire_day + ", put_yn=" + put_yn
+				+ ", name=" + name + ", reg_no=" + reg_no + ", eng_name=" + eng_name + ", phone=" + phone + ", hp=" + hp
+				+ ", pos_gbn_code=" + pos_gbn_code + ", cmp_reg_no=" + cmp_reg_no + ", cmp_reg_image=" + cmp_reg_image
+				+ ", cmp_reg_imagelink=" + cmp_reg_imagelink + ", sex=" + sex + ", years=" + years + ", email=" + email
+				+ ", zip=" + zip + ", addr1=" + addr1 + ", addr2=" + addr2 + ", dept_code=" + dept_code + ", id=" + id
+				+ ", pwd=" + pwd + ", salary=" + salary + ", kosa_reg_yn=" + kosa_reg_yn + ", kosa_class_code="
+				+ kosa_class_code + ", mil_yn=" + mil_yn + ", mil_type=" + mil_type + ", mil_level=" + mil_level
+				+ ", mil_startdate=" + mil_startdate + ", mil_enddate=" + mil_enddate + ", job_type=" + job_type
+				+ ", gart_level=" + gart_level + ", self_intro=" + self_intro + ", crm_name=" + crm_name + ", profile="
+				+ profile + ", profilelink=" + profilelink + ", resume=" + resume + ", resumelink=" + resumelink
+				+ ", current_yn=" + current_yn + ", emailprovider=" + emailprovider + ", jsetDate=" + jsetDate
+				+ ", rsetDate=" + rsetDate + "]";
+	}
+	
+	
+		
 	
 	
 }

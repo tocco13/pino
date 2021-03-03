@@ -30,11 +30,42 @@ $(document).ready(function(){
 	
 });
 
-function check(){
-	if(!document.fields.empsabun.value){
-		alert("사번이 비었습니다.");
-		document.fields.empsabun.focus();
-		return false();
+function check(event){
+	event.preventDefault();
+	var sabun = $('#empsabun').val();
+	var name = $('#empkrname').val();
+	var current = $('#empstate').val();
+	var put = $('#insertstate').val();
+	var pos = $('#emprank').val();
+	var join = $('#join_day').val();
+	var retire = $('#retire_day').val();
+	var jobtype = $('#jobtypebox').val();
+	
+	//모든 인풋 검사
+	var input = document.getElementsByTagName("input");
+	//모든 셀렉 검사
+	var select = document.getElementsByTagName("select");
+	//카운트변수
+	var i;
+	//검사변수
+	var exists = 0;
+	
+	for(i = 0; i < input.length; i++){
+		//배열로 나오니까 하나씩 담아서
+		var gab = input[i];
+		var gab2 = select[i];
+		//값이 있는지 검사해보고
+		if( gab.value.length > 0 || gab2.value.length > 0){
+			//검사변수에 값 더해주고
+			exists++;
+		}
+	}
+	
+	if(exists >= 1){
+		$('#fields').submit();
+	} else if (exists < 1) {
+		alert('검색항목을 한개라도 입력해야합니다');
+		return false;
 	}
 	
 };

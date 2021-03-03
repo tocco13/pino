@@ -89,32 +89,30 @@
 		kosa_reg_yn, 
 		kosa_class_code, 
 		join_day, retire_day, 
-		cmp_reg_no, crm_name, self_intro
+		cmp_reg_no, cmp_reg_image, crm_name, self_intro
 		)
 		VALUES (
-			(select max(sabun)+1 from insa),
+			(select nvl(max(sabun)+1,1) from insa),
 			#{name}, #{id}, #{pwd}, #{hp}, #{reg_no},
 			#{eng_name, jdbcType=VARCHAR}, #{phone}, #{years, jdbcType=VARCHAR}, #{email}, #{job_type, jdbcType=VARCHAR},
 			#{sex, jdbcType=VARCHAR}, #{zip, jdbcType=VARCHAR}, #{addr1, jdbcType=VARCHAR}, #{addr2, jdbcType=VARCHAR}, #{pos_gbn_code, jdbcType=VARCHAR}, 
 			#{dept_code, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{gart_level, jdbcType=VARCHAR}, #{put_yn, jdbcType=VARCHAR},
 			#{mil_yn, jdbcType=VARCHAR},	#{mil_type, jdbcType=VARCHAR}, #{mil_level, jdbcType=VARCHAR}, #{mil_startdate, jdbcType=VARCHAR}, #{mil_enddate, jdbcType=VARCHAR}, 
 			#{kosa_reg_yn, jdbcType=VARCHAR}, #{kosa_class_code, jdbcType=VARCHAR}, #{join_day, jdbcType=VARCHAR}, #{retire_day, jdbcType=VARCHAR}, #{cmp_reg_no, jdbcType=VARCHAR},
-			#{crm_name, jdbcType=VARCHAR}, #{self_intro, jdbcType=VARCHAR}
+			#{cmp_reg_image, jdbcType=VARCHAR}, #{crm_name, jdbcType=VARCHAR}, #{self_intro, jdbcType=VARCHAR}
 			)	
 	</insert>
 	
-	<!--검색 상황:
-	사번검색
-	성명검색
-	입사구분
-	투입여부
-	직위
-	입사일자
-	퇴사일자
-	직종
-	  -->
+	  
+	  <!--총 검색물 갯수 출력  -->
+	  <select id="countList" resultType="int">
+	  	SELECT count(*)
+	  	FROM insa
+	  </select>
+	  
+	  <!-- 페이징 처리 후 검색결과 조회 -->
 	<select id="searchEmp" parameterType="java.util.HashMap" resultType="iVO">
-		SELECT *
+		SELECT w.*
 		FROM 
 			(SELECT rownum as rnum, q.* 
 			FROM 
@@ -126,15 +124,15 @@
 				and sabun = #{sabun}
 				</if>
 				<if test="name !=null and name !=''">
-				and name = #{name}
+				and name LIKE '%' || #{name} || '%'
 				</if>
-				<if test="join_yn !=null and join_yn !=''">
-				and current_yn = #{join_yn}
+				<if test="current_yn !=null and current_yn !=''">
+				and current_yn = #{current_yn}
 				</if>
 				<if test="put_yn !=null and put_yn !=''">
 				and put_yn = #{put_yn}
 				</if>
-				<if test="job_rank !=null and job_rank !=''">
+				<if test="pos_gbn_code !=null and pos_gbn_code !=''">
 				and pos_gbn_code = #{pos_gbn_code}
 				</if>
 				<if test="join_day !=null and join_day !=''">
@@ -149,15 +147,77 @@
 				ORDER BY
 				sabun asc
 				) q
-			)w		
-	</select>
+			)w	
+		WHERE rnum BETWEEN #{start} AND #{end}	
+	</select> 
 	
 	<!--조회에서 세부조회로  -->
-	<select id="empDetail" parameterType="string" resultType="iVO">
-		SELECT *
-		FROM insa
-		WHERE
-		name = #{name}
+	<resultMap type="HashMap" id="hashvo">
+		<result property="sabun" column="sabun"/>
+		<result property="join_day" column="join_day"/>
+		<result property="retire_day" column="retire_day"/>
+		<result property="put_yn" column="put_yn"/>
+		<result property="name" column="name"/>
+		<result property="reg_no" column="reg_no"/>
+		<result property="eng_name" column="eng_name"/>
+		<result property="phone" column="phone"/>
+		<result property="hp" column="hp"/>
+		<result property="pos_gbn_code" column="pos_gbn_code"/>
+		<result property="cmp_reg_no" column="cmp_reg_no"/>
+		<result property="cmp_reg_image" column="cmp_reg_image"/>
+		<result property="sex" column="sex"/>
+		<result property="years" column="years"/>
+		<result property="email" column="email"/>
+		<result property="zip" column="zip"/>
+		<result property="addr1" column="addr1"/>
+		<result property="addr2" column="addr2"/>
+		<result property="dept_code" column="dept_code"/>
+		<result property="id" column="id"/>
+		<result property="pwd" column="pwd"/>
+		<result property="salary" column="salary"/>
+		<result property="kosa_reg_yn" column="kosa_reg_yn"/>
+		<result property="kosa_class_code" column="kosa_class_code"/>
+		<result property="mil_yn" column="mil_yn"/>
+		<result property="mil_type" column="mil_type"/>
+		<result property="mil_level" column="mil_level"/>
+		<result property="mil_startdate" column="mil_startdate"/>
+		<result property="mil_enddate" column="mil_enddate"/>
+		<result property="job_type" column="job_type"/>
+		<result property="gart_level" column="gart_level"/>
+		<result property="self_intro" column="self_intro" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="crm_name" column="crm_name"/>
+		<result property="profile" column="profile"/>
+		<result property="resume" column="resume"/>
+		<result property="current_yn" column="current_yn"/>
+	</resultMap>
+	<select id="empDetail" parameterType="string" resultMap="hashvo">
+		SELECT 
+		    sabun, join_day, retire_day, 
+            put_yn, name, reg_no, eng_name, 
+            phone, hp, pos_gbn_code, 
+		    cmp_reg_no, bsave_name as cmp_reg_image, bfile_path as cmp_reg_link,  
+		    sex, years, email, zip, addr1, addr2, 
+		    dept_code, join_gbn_code,
+            i.id, pwd, salary, kosa_reg_yn, 
+            kosa_class_code, mil_yn, 
+            mil_type,
+		    mil_level, mil_startdate, 
+		    mil_enddate, job_type, 
+            gart_level, self_intro, 
+            crm_name, 
+			f.save_name as profile, rsave_name as resume, rfile_path as resumelink
+		FROM 
+		    insa i , files f, bfiles b, rfiles r 
+		WHERE 
+		    i.id = (
+		    SELECT id
+		    FROM insa
+		    WHERE 
+		    sabun = #{sabun}
+		    )
+			and i.id = f.id
+            and i.id = bid
+            and i.id = rid
 	</select>
 	
 	<update id="empUpdate" parameterType="iVO">
@@ -249,5 +309,11 @@
 		WHERE
 		sabun = #{sabun}
 	</update>
+	
+	<delete id="deleteEmp" parameterType="String">
+		DELETE FROM insa
+		WHERE 
+		sabun = #{sabun}
+	</delete>
 	
 </mapper>

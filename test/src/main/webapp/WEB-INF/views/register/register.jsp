@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>인사관리시스템</title>
-<link rel="shortcut icon" href="#">
+<link rel="shortcut icon" href="/images/noimage.jpg">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/css/w3.css">
 <link rel="stylesheet" href="/resources/css/register/register.css">
@@ -38,36 +38,49 @@
 		<div>
 			<h2 class="empdetail">직원 상세 정보</h2>
 			<div class="w3-right" style="padding-right: 25px; height: 50px;">
-				<button type="submit" class="register" id="register">등록</button>
+				<button type="button" class="register" id="register">등록</button>
 				<button class="reset">초기화</button>
 				<button class="previous" id="previous">이전</button>
 			</div>
 		</div>
-		<form class="fields" id="fields" method="POST" action="/register/registerproc.pino">
+		<form class="pic" id="pic" enctype="multipart/form-data">
+		<input type="file" name="profilepic" id="profilepic" style="display:none;" onchange="setThumbnail(event,'profilepic2');">
+		<input type="hidden" id="fid2" name="id" value="">
+		</form>
+		<form class="bcert" id="bcertform" enctype="multipart/form-data">
+		<input type="file" name="certpic" id="uploadcert" style="display:none;" onchange="preview(event,'imgbcert'); showFile(this, 'businesscert');">
+		<input type="hidden" id="fid3" name="id" value="">
+		</form>
+		<form class="resume" id="resumeform" enctype="multipart/form-data">
+		<input type="file" class="resume2" name="resume" id="uploadres" style="display:none;" onchange="preview(event,'imgres');showFile(this, 'resumename');">
+		<input type="hidden" id="fid4" name="id" value="">
+		</form>
+		<form id="idForm">
+		<input type="hidden" id="fid5" name="id" value=""/>
+		</form>
+		<form class="fields" id="fields">
 			<input type="hidden" id="fname" name="name" value="">
-			<input type="hidden" id="fregno" name="reg_no" value="">
 			<input type="hidden" id="fhp" name="hp" value="">
 			<input type="hidden" id="fid" name="id" value="">
 			<input type="hidden" id="fpwd" name="pwd" value="">
 			<input type="hidden" id="femail" name="email" value="">
 
-
-			<img class="profilepic" src="/images/noimage.jpg">
+			<img class="profilepic" id="profilepic2" src="/images/noimage.jpg">
 			
 			<label class="empno" for="empnum">*사번</label>
-			<input type="text" class="empnum" name="sabun" id="empno" value="a" disabled/>		
+			<input type="text" class="empnum" name="sabun" id="empno" value="" disabled/>		
 			
 			<label class="empname" for="empkrname">*한글성명</label>
-			<input type="text" class="empkrname" name="empkrname" id="empkrname">		
+			<input type="text" class="empkrname" name="empkrname" id="empkrname" required>		
 			
 			<label class="empname2" for="empenname">영문성명</label>
 			<input type="text" class="empenname" name="eng_name" id="empenname">
 					
 			<label class="empiden" for="empid">*아이디</label>
-			<input type="text" class="empid" name="empid" id="empid">
+			<input type="text" class="empid" name="empid" id="empid" required>
 			
 			<label class="emppass" for="emppw">*패스워드</label>
-			<input type="password" class="emppw" name="emppw" id="emppw">
+			<input type="password" class="emppw" name="emppw" id="emppw" required>
 			
 			<label class="emppass2" for="emppwcheck">*패스워드 확인</label>
 			<input type="password" class="emppwcheck" name="emppwcheck" id="emppwcheck">
@@ -76,18 +89,18 @@
 			<input type="text" class="emptel" name="phone" id="emptel">
 		
 			<label class="empmob" for="empmobile">*핸드폰번호</label>
-			<input type="text" class="empmobile" name="empmobile" id="empmobile">
+			<input type="text" class="empmobile" name="empmobile" id="empmobile" required>
 				
 			<label class="emprrn" for="empjoomin">*주민번호</label>
-			<input type="text" class="empjoomin" name="empjoomin" id="empjoomin" maxlength="14">
+			<input type="text" class="empjoomin" name="empjoomin" id="empjoomin" maxlength="14" onchange="showAge();showGen();" required>
 			<input type="hidden" class="empjoomin2" name="reg_no" id="empjoomin2">
 			
 			<label class="empage" for="empyear">연령</label>
-			<input type="text" class="empyear" name="years" id="empyear" onclick="showAge();" value="">
+			<input type="text" class="empyear" name="years" id="empyear" value="" readonly="readonly">
 				
 			<label class="empeadd" for="empemail">*이메일</label>
 			<div class="emaildiv">
-			<input type="text" class="empemail" name="empemail" id="empemail">
+			<input type="text" class="empemail" name="empemail" id="empemail" required>
 			<select class="empmailprovider" name="empmailprovider" id="empmailprovider">
 				<option value="">(선택)</option>
 <c:forEach var="eplist" items="${eplist}">
@@ -107,7 +120,7 @@
 			</select>
 	
 			<label class="empgen" for="empgenselect">성별</label>
-			<select class="empgenselect" name="sex" id="empgenselect">
+			<select class="empgenselect" name="sex" id="empgenselect" readonly="readonly">
 				<option value="">(선택)</option>
 				<option value="M">남</option>
 				<option value="F">여</option>
@@ -122,8 +135,8 @@
 			<input type="text" class="empaddsearch" name="addr1" id="empaddsearch" placeholder="주소" style="text-align:left;">
 			<input type="text" class="empaddspec" name="addr2" id="empaddspec" placeholder="세부주소" style="text-align:left;">
 
-			<button type="submit" class="button uploadbutton" id="uploadbutton">사진올리기</button>
-			<input type="file" name="profilepic" id="profilepic" style="display:none;">
+			<label for="profilepic" class="uploadbutton">사진업로드</label>
+			
 			
 			<label class="emprank" for="emprankselect">직위</label>
 			<select class="emprankselect" name="pos_gbn_code" id="emprankselect">
@@ -166,7 +179,7 @@
 			<label class="empins" for="empinsert">투입여부</label>
 			<div class="field22">
 				<select class="empinsert" name="put_yn" id="empinsert">
-					<option value="default">(선택)</option>
+					<option value="">(선택)</option>
 					<option value="Y">투입</option>
 					<option value="N">대기</option>
 				</select>
@@ -199,11 +212,11 @@
 			</div>			
 			<label class="milindate">입영일자</label>
 			<div class="field26">
-				<input class="mildate" type="date" name="mil_startdate" id="datepicker" disabled="true">
+				<input class="mildate" type="text" name="mil_startdate" id="datepicker1" disabled="true" readonly="readonly">
 			</div>
 			<label class="miloutdate">전역일자</label>
 			<div class="field27">
-				<input class="mildate" type="date" name="mil_enddate" id="datepicker2" disabled="true">
+				<input class="mildate" type="text" name="mil_enddate" id="datepicker2" disabled="true" readonly="readonly">
 			</div>
 
 			<label class="kosa" for="kosareg">KOSA등록</label>
@@ -217,7 +230,7 @@
 			<label class="kosa2" for="kosarank">KOSA등급</label>
 			<div class="field29">
 				<select class="kosarank" name="kosa_class_code" id="kosarank" disabled="true">
-					<option value="default">(선택)</option>
+					<option value="">(선택)</option>
 <c:forEach var="kclass" items="${kosaclass}">
 					<option value="${kclass.kosa_class_code}">${kclass.kosa_class_code}</option>
 </c:forEach>
@@ -225,11 +238,11 @@
 			</div>			
 			<label class="empindate">입사일자</label>
 			<div class="field30">
-				<input class="empdate" type="date" name="join_day" id="datepicker3">
+				<input class="empdate" type="text" name="join_day" id="datepicker3" readonly="readonly">
 			</div>
 			<label class="empoutdate">퇴사일자</label>
 			<div class="field31">
-				<input class="empdate" type="date" name="retire_day" id="datepicker4">
+				<input class="empdate" type="text" name="retire_day" id="datepicker4" readonly="readonly">
 			</div>
 			
 			<label class="business" for="businessno">사업자번호</label>
@@ -242,27 +255,50 @@
 			</div>
 			<label class="business3" for="businesscert">사업자등록증</label>
 			<div class="field34">
-				<input class="businesscert" type="text" name="cmp_reg_image" id="businesscert">
+				<input class="businesscert" type="text" name="cmp_reg_image" id="businesscert" value="" readonly="readonly">
 			</div>
 			<div class="field35">
-				<input class="uploadcertbtn" id="uploadcertbtn" type="button" value="등록">
-				<input class="previewcertbtn" id="previewcertbtn" type="button" value="미리보기">
+				<label class="uploadcertbtn" for="uploadcert">   등록    </label> 
+				<input class="previewcertbtn" id="previewcertbtn" type="button" value="미리보기" onclick="openpreview(event, 'bcertmodal');">
 			</div>
 			
 			<label class="intro" for="selfintro">자기소개</label>
 			<div class="field36">
 				<textarea class="selfintro" name="self_intro" id="selfintro"></textarea>
 			</div>
-			<label class="resume" for="resumelink">이력서</label>
+			<label class="resume" for="resumename">이력서</label>
 			<div class="field37">
-				<input class="resumelink" type="text" name="resume" id="resumelink">
+				<input class="resumename" type="text" name="resume" id="resumename" value="" readonly="readonly">
 			</div>
 			<div class="field38">
-				<input class="resume2" type="file" name="resume2" id="resume2" style="display:none;">
-				<input class="ruploadbtn" id="uploadbtn" type="button" value="파일 업로드">
-				<input class="rpreviewbtn" id="previewbtn" type="button" value="미리보기">
+				<label class="ruploadbtn" for="uploadres">파일 업로드</label>
+				<input class="rpreviewbtn" id="previewbtn" type="button" value="미리보기" onclick="openpreview(event, 'resmodal');">
 			</div>
 		</form>
+		
+		<!-- 사업자등록증 -->
+		<div id="bcertmodal" class="w3-modal dnone">
+			<div class="w3-modal-content">
+				<div class="w3-container">
+					<h2>사업자등록증</h2>
+					<span onclick="closepreview(event,'bcertmodal')" class="w3-button w3-display-topright">&times;</span>
+					<img id="imgbcert" src="/images/noimage.jpg">
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- 이력서 모달창 -->
+		<div id="resmodal" class="w3-modal dnone">
+			<div class="w3-modal-content">
+				<div class="w3-container">
+					<h2>이력서</h2>
+					<span onclick="closepreview(event, 'resmodal')" class="w3-button w3-display-topright">&times;</span>
+					<img  id="imgres" src="/images/noimage.jpg">
+				</div>
+			</div>
+		</div>
+		
 	</section>
 </body>
 </html>

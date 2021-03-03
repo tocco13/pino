@@ -33,7 +33,7 @@
 	</header>
 	<section>
 	<h2 class="emplist">직원 리스트</h2>
-	<form class="fields" id="fields" name="fields" method="POST" action="/search/search2.pino" onsubmit="return check()">
+	<form class="fields" id="fields" name="fields" method="POST" action="/search/search2.pino">
 	<div class="search">
 		<label class="empno" for="empsabun">사번 </label>
 		<input type="text" class="empsabun" name="empsabun" id="empsabun">
@@ -73,7 +73,7 @@
 		</select>	
 	</div>
 	<div class="w3-right" style="padding-top: 25px; padding-right: 25px;">
-		<button type="submit" class="searchbtn" id="searchbtn" >검색</button>
+		<button type="submit" class="searchbtn" id="searchbtn" onclick="check(event);">검색</button>
 		<button type="reset" class="reset">초기화</button>
 		<button type="button" class="previous">이전</button>
 	</div>

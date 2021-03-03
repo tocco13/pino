@@ -5,7 +5,7 @@ import java.util.List;
 import org.mybatis.spring.*;
 import org.springframework.beans.factory.annotation.*;
 
-import com.pinosoft.test.vo.InsaVO;
+import com.pinosoft.test.vo.*;
 
 public class RegisterDao {
 	
@@ -50,6 +50,14 @@ public class RegisterDao {
 	
 	public int empUpdate (InsaVO iVO) {
 		return SqlSession.insert("iSQL.empUpdate", iVO);
+	}
+	
+	public int empDelete (String string) {
+		return SqlSession.delete("iSQL.deleteEmp", string);
+	}
+	
+	public int insertFile(FileVO fVO) {
+		return SqlSession.insert("iSQL.insertFile", fVO);
 	}
 	
 }
