@@ -54,3 +54,41 @@ SELECT
 		    sabun = '3'
 		    )
             ;
+            
+SELECT w.*
+		FROM 
+			(SELECT rownum as rnum, q.* 
+			FROM 
+				(SELECT *
+				FROM insa
+				WHERE 
+				1=1
+				<if test="sabun !=null and sabun !=''">
+				and sabun = #{sabun}
+				</if>
+				<if test="name !=null and name !=''">
+				and name LIKE '%' || #{name} || '%'
+				</if>
+				<if test="current_yn !=null and current_yn !=''">
+				and current_yn = #{current_yn}
+				</if>
+				<if test="put_yn !=null and put_yn !=''">
+				and put_yn = #{put_yn}
+				</if>
+				<if test="pos_gbn_code !=null and pos_gbn_code !=''">
+				and pos_gbn_code = #{pos_gbn_code}
+				</if>
+				<if test="join_day !=null and join_day !=''">
+				and join_day = #{join_day}
+				</if>
+				<if test="retire_day !=null and retire_day !=''">
+				and retire_day = #{retire_day}
+				</if>
+				<if test="job_type !=null and job_type !=''">
+				and job_type = #{job_type}
+				</if>
+				ORDER BY
+				sabun asc
+				) q
+			)w	
+		WHERE rnum BETWEEN #{start} AND #{end}	
