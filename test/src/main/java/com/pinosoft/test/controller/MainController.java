@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pinosoft.test.dao.*;
 import com.pinosoft.test.vo.*;
 
+import oracle.sql.ARRAY;
+
 @Controller
 public class MainController {
 
@@ -68,7 +70,7 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/register/registerproc", method = { RequestMethod.GET, RequestMethod.POST })
-	@ResponseBody
+//	@ResponseBody
 	public ModelAndView registerproc(ModelAndView mv, HttpServletResponse response, @RequestParam Map<Object, Object> allParams) throws IOException {
 		//마지막 수정 - responsebody, httpservletresponse, printwriter
 		int cnt = 0;
@@ -126,17 +128,17 @@ public class MainController {
        
 		cnt = rDao.addEmp(iVO);
 		if (cnt == 1) {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('등록이 완료되었습니다'); location.href='/register/register.pino'; </script>");
-			out.flush();
-			//mv.setViewName("redirect:/register/register.pino");
+//			response.setContentType("text/html; charset=UTF-8");
+//			PrintWriter out = response.getWriter();
+//			out.println("<script>alert('등록이 완료되었습니다'); location.href='/register/register.pino'; </script>");
+//			out.flush();
+			mv.setViewName("redirect:/register/register.pino");
 		} else {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('등록 중 오류가 발생했습니다'); location.href='/register/register.pino';</script>");
-			out.flush();
-			//mv.setViewName("redirect:/main/main.pino");
+//			response.setContentType("text/html; charset=UTF-8");
+//			PrintWriter out = response.getWriter();
+//			out.println("<script>alert('등록 중 오류가 발생했습니다'); location.href='/register/register.pino';</script>");
+//			out.flush();
+			mv.setViewName("redirect:/main/main.pino");
 		}
 
 		return mv;
@@ -168,8 +170,7 @@ public class MainController {
 			@RequestParam(value = "job_type", required = false) String job_type,
 			PageVO pVO, 
 			@RequestParam(value="nowPage", required=false) String nowPage, 
-			@RequestParam(value="cntPerPage", required=false) String cntPerPage
-			) {
+			@RequestParam(value="cntPerPage", required=false) String cntPerPage) {
 		
 		//게시글 총 갯수 구하고
 		int total = sDao.countList();
@@ -221,6 +222,29 @@ public class MainController {
 //		map.putAll(page);
 				 
 		List<InsaVO> result = sDao.searchEmp(map);
+		for(int i =0; i < result.size(); i++) {
+			String jd = "";
+			String jd2 = "";
+			if(result.get(i).getJoin_day() != null) {
+				jd = result.get(i).getJoin_day();
+				jd2 = jd.substring(0, 10);
+				result.get(i).setJoin_day(jd2);
+			} else {
+				continue;
+			}
+		}
+		
+		for(int i =0; i < result.size(); i++) {
+			String rd = "";
+			String rd2 = "";
+			if(result.get(i).getRetire_day() != null) {
+				rd = result.get(i).getRetire_day();
+				rd2 = rd.substring(0, 10);
+				result.get(i).setRetire_day(rd2);
+			} else {
+				continue;
+			}
+		}
 		
 		mv.addObject("paging", pVO);
 		mv.addObject("list", result);
@@ -233,8 +257,7 @@ public class MainController {
 
 
 	@RequestMapping(value = "/edit/edit", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView edit(ModelAndView mv, HttpServletRequest req, @RequestParam(value="sabunparam", required=false)String sabun) {
-		
+	public ModelAndView edit(ModelAndView mv, @RequestParam(value="sabunparam", required=false)String sabun) {
 		//		HashMap<String, Object> list = sDao.empDetail(sabun);
 		Map<Object, Object> list = sDao.empDetail(sabun);
 //		Iterator<Object> mapIter = list.keySet().iterator();
@@ -247,9 +270,55 @@ public class MainController {
 //					System.out.println(key+" : "+value);	
 //		}
 //		System.out.println("---에딧 조회값 끝---");
-		
-//		list.put("sabun", list.get("sabun"));
-//		list.put("profile", list.get("profile"));
+		  if(list.get("email")!= null) {
+	      String tmp = "";
+	      tmp = list.get("email").toString();
+	      int tmp2 = tmp.indexOf("@");
+	      String tmp3 = tmp.substring(0, tmp2);
+	      String tmp4 = tmp.substring(tmp2);
+//	      System.out.println(tmp3);
+//	      System.out.println(tmp4);
+	      list.put("email", tmp3);
+	      list.put("emailprovider", tmp4);
+		  }
+		  
+	      if(list.get("join_day") != null) {
+	      String jd = list.get("join_day").toString();
+	      String jd2 = jd.substring(0, 10);
+	      list.put("join_day", jd2);
+	      }
+	      if(list.get("retire_day") != null) {
+	    	  String rd = list.get("retire_day").toString();
+	    	  String rd2 = rd.substring(0, 10);
+	    	  list.put("retire_day", rd2);
+	      }
+	      if(list.get("mil_startdate") != null) {
+	    	  String msd = list.get("mil_startdate").toString();
+	    	  String msd2 = msd.substring(0, 10);
+	    	  list.put("mil_startdate", msd2);
+	      }
+	      if(list.get("mil_enddate") != null) {
+	    	  String med = list.get("mil_enddate").toString();
+	    	  String med2 = med.substring(0, 10);
+	    	  list.put("mil_enddate", med2);
+	      }
+	      
+	      if(list.get("zip") != null) {
+	    	  if(Integer.parseInt(list.get("zip").toString()) == 0) {
+	    		  list.put("zip", "");
+	    	  }
+	      }
+	      
+//	Iterator<Object> mapIter2 = list.keySet().iterator();
+//	
+//	while(mapIter2.hasNext()){
+//		
+//		Object key = mapIter2.next();
+//		Object value = list.get(key);
+//		
+//		System.out.println(key+" : "+value);	
+//	}
+//	System.out.println("---수정에딧 조회값 끝---");
 		
 //		Set<Entry<String, Object>> entryset = list.entrySet();
 //		ArrayList<Entry<String, Object>> entrylist = new ArrayList<Entry<String, Object>> (entryset);
@@ -295,20 +364,30 @@ public class MainController {
         iVO.setHp(allParams.get("hp").toString());
         iVO.setId(allParams.get("id").toString());
         iVO.setPwd(allParams.get("pwd").toString());
-        iVO.setEmail(allParams.get("email").toString());
+//        String tmp = "";
+//        tmp = allParams.get("email").toString();
+//        int tmp2 = tmp.indexOf("@");
+//        String tmp3 = tmp.substring(0, tmp2);
+//        String tmp4 = tmp.substring(tmp2);
+//        iVO.setEmail(tmp3);
+        String part1 = allParams.get("empemail").toString();
+        String part2 = allParams.get("empmailprovider").toString();
+        String part3 = part1+part2;
+        iVO.setEmail(part3);
+//        iVO.setEmailprovider(tmp4);
         iVO.setName(allParams.get("name").toString());
         iVO.setEng_name(allParams.get("eng_name").toString());
         iVO.setPhone(allParams.get("phone").toString());
         iVO.setReg_no(allParams.get("reg_no").toString());
         if(allParams.get("years") == null || allParams.get("years").equals("")) {
-        	iVO.setYears(0);
+       	iVO.setYears(0);
         } else {
         iVO.setYears(Integer.parseInt(allParams.get("years").toString()));
         }
         iVO.setJob_type(allParams.get("job_type").toString());
         iVO.setSex(allParams.get("sex").toString());
         if(allParams.get("zip") == null || allParams.get("zip").equals("")) {
-        	iVO.setZip(0);
+      	iVO.setZip(0);
         } else {
         iVO.setZip(Integer.parseInt(allParams.get("zip").toString()));
         }
@@ -339,11 +418,8 @@ public class MainController {
         iVO.setRetire_day(allParams.get("retire_day").toString());
         iVO.setCmp_reg_no(allParams.get("cmp_reg_no").toString());
         iVO.setCrm_name(allParams.get("crm_name").toString());
-        if(allParams.get("self_intro") == null) {
-        	iVO.setSelf_intro("null");
-        } else {
-        	iVO.setSelf_intro(allParams.get("self_intro").toString());
-        }
+        iVO.setSelf_intro(allParams.get("self_intro").toString());
+
 		cnt = rDao.empUpdate(iVO);
 		if(cnt !=0) {
 			red.addAttribute("sabunparam", iVO.getSabun());
@@ -370,5 +446,14 @@ public class MainController {
 		}
 		return mv;
 	}
-
+	
+	@RequestMapping(value="/deleteMultiProc", method = {RequestMethod.GET, RequestMethod.POST})
+	public void deleteMultiProc(@RequestParam("array") String[] array) {
+		int tmp = 0;
+		for(int i = 0; i < array.length; i++) {
+			tmp = Integer.parseInt(array[i]);
+//			System.out.println(i+"번째 사번 : "+tmp);
+			rDao.empMultiDelete(tmp);
+		}
+	}
 }

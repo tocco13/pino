@@ -37,13 +37,17 @@ public class FileController {
 			//1.파일명을 . 기준으로 분리
 			//1-1.파일 원본명을 받고
 			String orgName = upload.getOriginalFilename();
-			
 			if(orgName != null || orgName!="") {
 				
 				//1-2.원본 이름 세팅해주고
 				fVO.setOrg_name(orgName);
 				//1-3.확장자 뗀 파일명 받고
-				String fileName = orgName.substring(0, orgName.indexOf('.'));
+				String fileName = "";
+				try {
+				fileName = orgName.substring(0, orgName.indexOf('.'));
+				} catch (Exception e) {
+					System.out.println("기존파일이 유지됩니다.");
+				}
 				//System.out.println("확장자 앞 파일이름 : " + fileName);		
 				//2.같은 파일명이 있는지 검사
 				//같은 아이디로 올라온게 있는지 검사

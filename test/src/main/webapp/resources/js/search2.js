@@ -25,17 +25,7 @@ $(document).ready(function(){
  	$(function(){
  		$("#datepicker2").datepicker();
  	});
- 		
-	$('#editbtn').click(function(){	
-		var p = document.getElementById("sabuntag").innerText;
-		$('#sabunparam').val(p);
-		document.getElementById("editform").submit();	
-	});	
-	
-	//$('#deletebtn').click(funtion(){
-	//	
-	//});
-	
+		
 	$('#checkall').click(function(){
 		if($('#checkall').is(':checked')) {
 			for(var i = 0; i < document.getElementsByClassName('deletecheck').length; i++){
@@ -52,16 +42,34 @@ $(document).ready(function(){
 		var count = 0;
 		var tmp = 0;
 		var arr = []
+		//삭제버튼 누른 시점에서 체크하기때문에 그 전에는 선택했다 해제해도 상관없다.
 		if(confirm("삭제하시겠습니까?")){
 			//체크된 체크박스 갯수만큼 반복
 			for(var i = 0; i < $('input:checkbox:checked').length; i++){
-			//반복해서 값이 찍힘을 알수있다.
-			console.log($('input:checkbox:checked')[i].getAttribute('value'));
-			tmp = $('input:checkbox:checked')[i].getAttribute('value');
-			arr.push(tmp);
+				tmp = $('input:checkbox:checked')[i].getAttribute('value');
+				//전체선택용 체크박스는 값이 null이니 그럴 경우 스킵하게
+				if(tmp == null || tmp == ''){
+					continue;
+				}
+				//배열에 추가
+				arr.push(tmp);
 			}
-			console.log($('input:checkbox:checked'));
 			console.log(arr);
+			console.log(arr.length);
+			$.ajax({
+				traditional: true,
+				type: "POST",
+				url: "/deleteMultiProc.pino",
+				data: {"array" : arr},
+				success: function(data){
+					alert('자료가 삭제되었습니다.');
+				},
+				error: function(error){
+				}, complete: function(){
+					alert('자료가 삭제되었습니다.');
+					location.reload();
+				}
+			});
 		} else {
 			return;
 		}
@@ -70,39 +78,41 @@ $(document).ready(function(){
 
 function check(event){
 //	event.preventDefault();
-	var sabun = $('#empsabun').val();
-	var name = $('#empkrname').val();
-	var current = $('#empstate').val();
-	var put = $('#insertstate').val();
-	var pos = $('#emprank').val();
-	var join = $('#join_day').val();
-	var retire = $('#retire_day').val();
-	var jobtype = $('#jobtypebox').val();
-	
-	//모든 인풋 검사
-	var input = document.getElementsByClassName("fieldinput");
-	//모든 셀렉 검사
-	var select = document.getElementsByTagName("select");
-	//검사변수
-	var exists = 0;
-	
-//	for(var i = 0; i < input.length; i++){
-		//배열로 나오니까 하나씩 담아서
-//		var gab = input[i];
-//		var gab2 = select[i];
-		//값이 있는지 검사해보고
-//		if( gab.value.length > 0 || gab2.value.length > 0){
-			//검사변수에 값 더해주고
-//			exists++;
-//		}
-//	}
-	
-//	if(exists >= 1){
-		var formdata = new FormData();
-		$('#fields').submit();
-//	} else if (exists < 1) {
-//		alert('검색항목을 한개라도 입력해야합니다');
-//		return false;
-//	}
-	
+//	var sabun = $('#empsabun').val();
+//	var name = $('#empkrname').val();
+//	var current = $('#empstate').val();
+//	var put = $('#insertstate').val();
+//	var pos = $('#emprank').val();
+//	var join = $('#join_day').val();
+//	var retire = $('#retire_day').val();
+//	var jobtype = $('#jobtypebox').val();
+
+	var formdata = new FormData();
+	$('#fields').submit();
+}
+
+function pageMove(pagenum){
+	var f = document.fields
+	$('#movePage').val(pagenum);
+	f.submit();
+}
+
+function pagePrevious(pagenum){
+	var f = document.fields
+	$('#movePage').val($('#startPage').val());
+	f.submit();
+}
+
+function pageNext(pagenum){
+	var f = document.fields
+	$('#movePage').val($('#endPage').val());
+	f.submit();
+}
+
+function empDetail(sabun){
+	//var p = document.getElementById("sabuntag").innerText;
+
+	$('#sabunparam').val(sabun);
+
+	document.getElementById("editform").submit();
 }

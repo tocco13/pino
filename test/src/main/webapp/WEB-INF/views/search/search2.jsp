@@ -74,7 +74,6 @@
 	<div class="w3-right" style="padding-top: 25px; padding-right: 25px;">
 		<button type="button" class="searchbtn" id="searchbtn" onclick="check(event);">검색</button>
 		<button type="button" class="deletebtn" id="deletebtn">삭제</button>
-		<button type="button" class="previous">이전</button>
 	</div>
 	<div class="searchtable" style="padding-top: 80px; margin: 0px 50px 0px 50px;'">
 		<table class="table" id="headrow" style="width: 100%;">
@@ -90,21 +89,21 @@
 				<th>퇴사일자</th>
 				<th>투입여부</th>
 				<th>연봉</th>
-				<th></th>
+<!-- 				<th></th> -->
 			</tr>
 			</thead>
 			<tbody>
 			<c:if test="${empty list}">
 			<tr class="searchresult" id="searchresult">
-				<td colspan="10" align="center">검색된 데이터가 없습니다</td>
+				<td colspan="9" align="center">검색된 데이터가 없습니다</td>
 			</tr>
 			</c:if>
 			<c:if test="${not empty list}">
 				<c:forEach var="info" items="${list}">
 					<tr class="searchresult" id="searchresult">
 						<td align="center" id="deletetag"><input type="checkbox" class="deletecheck" id="${info.sabun}" value="${info.sabun}"></td>
-						<td align="center" id="sabuntag">${info.sabun}</td>
-						<td align="center" id="nametag" align="center">${info.name}</td>
+						<td align="center" id="sabuntag"><a href="javascript:void(0)" onclick="empDetail(${info.sabun})" id="sabunlink">${info.sabun}</a></td>
+						<td align="center" id="nametag" align="center"><a href="javascript:void(0)" onclick="empDetail(${info.sabun})" id="sabunlinkname">${info.name}</a></td>
 						<td align="center" id="regtag">${info.reg_no}</td>
 						<td align="center" id="hptag">${info.hp}</td>
 						<td align="center" id="postag">${info.pos_gbn_code}</td>
@@ -112,54 +111,41 @@
 						<td align="center" id="rdaytag">${info.retire_day}</td>
 						<td align="center" id="puttag">${info.put_yn}</td>
 						<td align="center" id="salarytag">${info.salary}</td>
-						<td align="center">
+					<!-- 	<td align="center">
 						<input type="button" class="editbtn" id="editbtn" value="수정"/>
-						</td>
+						</td> -->
 					</tr>
 				</c:forEach>
 			</c:if>
 				<tr align="center">
-				<td colspan="11" align="center">
+				<td colspan="10" align="center">
  				<c:if test="${paging.startPage != 1 }">
-					<a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a>
+					<%-- <a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a> --%>
+					<%-- <a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a> --%>
+					<a href="javascript:void(0)" onclick="pagePrevious(${paging.startPage - 1})"><button>&larr;</button></a>
 				</c:if>
 				<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
 					<c:choose>
 						<c:when test="${p == paging.nowPage }">
-							<b>${p }</b>
+							<button>${p }</button>
 						</c:when>
 						<c:when test="${p != paging.nowPage }">
-							<a href="/search/search2.pino?nowPage=${p }&cntPerPage=${paging.cntPerPage }">${p }</a>
+							<%-- <a href="/search/search2.pino?nowPage=${p }&cntPerPage=${paging.cntPerPage }" id="pageLink">${p }</a> --%>
+							<a href="javascript:void(0)" onclick="pageMove(${p})" id="pageLink"><button>${p }</button></a>
 						</c:when>
 					</c:choose>
 				</c:forEach>
 				<c:if test="${paging.endPage != paging.lastPage }">
-					<a href="/search/search2.pino?nowPage=${paging.endPage + 1 }&cntPerPage=${paging.cntPerPage }">&gt;</a>
+					<a href="javascript:void(0)" onclick="pageNext(${paging.endPage + 1})"><button>&rarr;</button></a>
 				</c:if>
 				</td>
 				</tr>
 			</tbody>
-<%-- 			<tfoot>
-				<tr>
- 				<c:if test="${paging.startPage != 1 }">
-					<a href="/search/search2.pino?=nowPage=${paging.startPage - 1 }%cntPerPage=${paging.cntPerPage}">&lt;</a>
-				</c:if>
-				<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
-					<c:choose>
-						<c:when test="${p == paging.nowPage }">
-							<b>${p }</b>
-						</c:when>
-						<c:when test="${p != paging.nowPage }">
-							<a href="/search/search2.pino?nowPage=${p }&cntPerPage=${paging.cntPerPage }">${p }</a>
-						</c:when>
-					</c:choose>
-				</c:forEach>
-				<c:if test="${paging.endPage != paging.lastPage }">
-					<a href="/search/search2.pino?nowPage=${paging.endPage + 1 }&cntPerPage=${paging.cntPerPage }">&gt;</a>
-				</c:if>
-				</tr>
-			</tfoot> --%>
 		</table>
+		<input type="hidden" id="endPage" name="endPage" value="${paging.endPage +1}"/>
+		<input type="hidden" id="startPage" name="startPage" value="${paging.startPage - 1}"/>
+		<input type="hidden" id="movePage" name="nowPage" value="1"/>
+		<input type="hidden" id="movePage" name="cntPerPage" value="5"/>
 	</div>
 	</form>
 	<form id="editform" action="/edit/edit.pino" method="post">

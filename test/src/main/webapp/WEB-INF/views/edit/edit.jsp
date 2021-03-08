@@ -40,28 +40,29 @@
 			<div class="w3-right" style="padding-right: 25px; height: 50px;">
 				<button type="button" class="editbtn" id="editbtn">수정</button>
 				<button class="delete" id="deletebtn">삭제</button>
-				<button class="previous">이전</button>
+				<button class="previous" id="gobackbtn">이전</button>
 			</div>
 		</div>
 		<form class="pic" id="pic" method="POST" action="/upload.pino" enctype="multipart/form-data">
 		<input type="file" name="profilepic" id="profilepic" style="display:none;" onchange="setThumbnail(event,'profilepic2');">
-		<input type="hidden" id="fid2" name="id" value="">
+		<input type="hidden" id="fid2" name="id" value="${list['profilelink']}">
 		</form>
 		<form class="bcert" id="bcertform" method="POST" enctype="multipart/form-data">
-		<input type="file" name="certpic" id="uploadcert" style="display:none;" onchange="preview(event,'imgbcert');">
-		<input type="hidden" id="fid3" name="id" value="">
+		<input type="file" name="certpic" id="uploadcert" style="display:none;" onchange="preview(event,'imgbcert'); showFile(this,'businesscert');">
+		<input type="hidden" id="fid3" name="id" value="${list['cmp_reg_link']}">
 		</form>
 		<form class="resume" id="resumeform" enctype="multipart/form-data">
-		<input type="file" class="resume2" name="resume" id="uploadres" style="display:none;" onchange="preview(event,'imgres');">
-		<input type="hidden" id="fid4" name="id" value="">
+		<input type="file" class="resume2" name="resume" id="uploadres" style="display:none;" onchange="preview(event,'imgres');showFile(this, 'resumename');">
+		<input type="hidden" id="fid4" name="id" value="${list[resumelink]}">
 		</form>
 		<form class="fields" id="fields" method="POST" action="/edit/editproc.pino">
 			<input type="hidden" id="femail" name="email" value="">
-<%-- <c:forEach var="detail" items="${list}"> --%>
-
+	<c:if test="${list['profile'] eq null }">
+			<img class="profilepic" id="profilepic2" src="../resources/images/noimage.jpg"/>
+	</c:if>
+	<c:if test="${list['profile'] ne null }">
 			<img class="profilepic" id="profilepic2" src="../resources/images/uploads/<c:out value="${list['profile'] }"/>"/>
-<%-- 			<img class="profilepic" src="<%=request.getSession().getServletContext().getRealPath("/")%>${map.profile}"> --%>
-			<!-- request.getSession().getServletContext().getRealPath("/")-->
+	</c:if>
 	
 			<label class="empno" for="empnum">*사번</label>
 			<input type="text" class="empnum" name="sabun" id="empno" readonly="readonly" value=" <c:out value="${list['sabun']}"/>" />	
@@ -95,17 +96,14 @@
 				
 			<label class="empeadd" for="empemail">*이메일</label>
 			<div class="emaildiv">
-<%-- 			<c:forTokens items="<c:out value="${list['email']}"/>" delims="@" var="mailadd"> --%>
-<%-- 			<input type="text" class="empemail" name="empemail" id="empemail" value="${mailadd}"> --%>
 			<input type="text" class="empemail" name="empemail" id="empemail" value="<c:out value="${list['email']}"/>">
-<%-- 			</c:forTokens> --%>
 			<select class="empmailprovider" name="empmailprovider" id="empmailprovider">
-				<option value="<c:out value="${list['email']}"/>"><c:out value="${list['email']}"/></option>
+				<option value="<c:out value="${list['emailprovider']}"/>"><c:out value="${list['emailprovider']}"/></option>
 <c:forEach var="eplist" items="${eplist}">
 				<option value="${eplist.emailprovider}">${eplist.emailprovider}</option>
 </c:forEach>
 			</select>
-			<input type="hidden" class="empemailfull" name="email" id="empemailfull">
+			<input type="hidden" class="empemailfull" name="email" id="empemailfull" value="">
 			</div>
 			
 			<label class="empjt" for="empjobtypeselect">직종체크</label>
@@ -164,7 +162,15 @@
 			<label class="empstatus" for="empstat">입사구분</label>
 			<div class="field20">
 				<select class="empstatselect" name="current_yn" id="empstatselect">
-					<option value="<c:out value="${list['current_yn']}"/>"><c:out value="${list['current_yn']}"/></option>
+					<option value="<c:out value="${list['current_yn']}"/>">
+					<c:set var="current"><c:out value="${list['current_yn']}"/></c:set>
+					<c:if test="${current eq 'Y' }">
+						입사
+					</c:if>
+					<c:if test="${current eq 'N' }">
+						퇴사
+					</c:if>
+					</option>
 					<option value="Y">입사</option>
 					<option value="N">퇴사</option>
 				</select>
@@ -172,17 +178,30 @@
 			<label class="emplvl" for="emplevel">등급</label>
 			<div class="field21">
 				<select class="emplevel" name="gart_level" id="emplevel">
-					<option value="<c:out value="${list['gart_level']}"/>"><c:out value="${list['gart_level']}"/></option>
+					<option value="<c:out value="${list['gart_level']}"/>">
+					<c:out value="${list['gart_level']}"/>
+					</option>
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
+
 				</select>
 			</div>
 			<label class="empins" for="empinsert">투입여부</label>
 			<div class="field22">
 				<select class="empinsert" name="put_yn" id="empinsert">
-					<option value="<c:out value="${list['put_yn']}"/>"><c:out value="${list['put_yn']}"/></option>
+					<option value="<c:out value="${list['put_yn']}"/>">
+					
+					<c:set var="put"><c:out value="${list['put_yn']}"/></c:set>
+					<c:if test="${put eq 'Y' }">
+						투입
+					</c:if>
+					<c:if test="${put eq 'N' }">
+						대기
+					</c:if>
+					
+					</option>
 					<option value="Y">투입</option>
 					<option value="N">대기</option>
 				</select>
@@ -190,14 +209,24 @@
 			<label class="empmilstat" for="empmilstate">입대여부</label>
 			<div class="field23">
 				<select class="empmilstate" name="mil_yn" id="empmilstate">
-					<option value="<c:out value="${list['mil_yn']}"/>"><c:out value="${list['mil_yn']}"/></option>
+					<option value="<c:out value="${list['mil_yn']}"/>">
+					
+					<c:set var="mil"><c:out value="${list['mil_yn']}"/></c:set>
+					<c:if test="${mil eq 'Y' }">
+						군필
+					</c:if>
+					<c:if test="${mil eq 'N' }">
+						미필
+					</c:if>
+					
+					</option>
 					<option value="N">미필</option>
 					<option value="Y">군필</option>
 				</select>
 			</div>		
 			<label class="milt" for="miltype">군별</label>
 			<div class="field24">
-				<select class="miltype" name="mil_type" id="miltype" disabled="true">
+				<select class="miltype" name="mil_type" id="miltype" ${list['mil_yn'] == null ? 'disabled' : 'N' ? 'disabled' : ''}>
 					<option value="<c:out value="${list['mil_type']}"/>"><c:out value="${list['mil_type']}"/></option>
 <c:forEach var="miltype" items="${miltype}">
 					<option value="${miltype.mil_type}">${miltype.mil_type}</option>
@@ -206,7 +235,7 @@
 			</div>			
 			<label class="milr" for="milrank">계급</label>
 			<div class="field25">
-				<select class="milrank" name="mil_level" id="milrank" disabled="true">
+				<select class="milrank" name="mil_level" id="milrank" ${list['mil_yn'] == null ? 'disabled' : 'N' ? 'disabled' : ''}>
 					<option value="<c:out value="${list['mil_level']}"/>"><c:out value="${list['mil_level']}"/></option>
 <c:forEach var="milrank" items="${milrank}">
 				<option value="${milrank.mil_level}">${milrank.mil_level}</option>
@@ -215,24 +244,34 @@
 			</div>			
 			<label class="milindate">입영일자</label>
 			<div class="field26">
-				<input class="mildate" type="date" name="mil_startdate" id="datepicker" disabled="true" value="<c:out value="${list['mil_startdate']}"/>">
+				<input class="mildate" type="text" name="mil_startdate" id="datepicker1" readonly="readonly" value="<c:out value="${list['mil_startdate']}"/>" readonly="readonly" ${list['mil_yn'] == null ? 'disabled' : 'N' ? 'disabled' : ''}>
 			</div>
 			<label class="miloutdate">전역일자</label>
 			<div class="field27">
-				<input class="mildate" type="date" name="mil_enddate" id="datepicker2" disabled="true" value="<c:out value="${list['mil_enddate']}"/>">
+				<input class="mildate" type="text" name="mil_enddate" id="datepicker2" readonly="readonly" value="<c:out value="${list['mil_enddate']}"/>" readonly="readonly" ${list['mil_yn'] == null ? 'disabled' : 'N' ? 'disabled' : ''}>
 			</div>
 
 			<label class="kosa" for="kosareg">KOSA등록</label>
 			<div class="field28">
-				<select class="kosareg" name="kosa_reg_yn" id="kosareg">
-					<option value="<c:out value="${list['kosa_reg_yn']}"/>"><c:out value="${list['kosa_reg_yn']}"/></option>
+				<select class="kosareg" name="kosa_reg_yn" id="kosareg" >
+					<option value="<c:out value="${list['kosa_reg_yn']}"/>">
+					
+					<c:set var="kosa"><c:out value="${list['kosa_reg_yn']}"/></c:set>
+					<c:if test="${kosa eq 'Y' }">
+						등록
+					</c:if>
+					<c:if test="${kosa eq 'N' }">
+						미등록
+					</c:if>
+					
+					</option>
 					<option value="Y">등록</option>
 					<option value="N">미등록</option>
 				</select>
 			</div>			
 			<label class="kosa2" for="kosarank">KOSA등급</label>
 			<div class="field29">
-				<select class="kosarank" name="kosa_class_code" id="kosarank" disabled="true">
+				<select class="kosarank" name="kosa_class_code" id="kosarank" ${list['kosa_reg_yn'] == null ? 'disabled' : 'N' ? 'disabled' : ''}>
 					<option value="<c:out value="${list['kosa_class_code']}"/>"><c:out value="${list['kosa_class_code']}"/></option>
 <c:forEach var="kclass" items="${kosaclass}">
 					<option value="${kclass.kosa_class_code}">${kclass.kosa_class_code}</option>
@@ -241,11 +280,11 @@
 			</div>			
 			<label class="empindate">입사일자</label>
 			<div class="field30">
-				<input class="empdate" type="date" name="join_day" id="datepicker3" value="<c:out value="${list['join_day']}"/>">
+				<input class="empdate" type="text" name="join_day" id="datepicker3" readonly="readonly" value="<c:out value="${list['join_day']}"/>"${list['current_yn'] == null ? '' : 'N' ? 'disabled' : ''}>
 			</div>
 			<label class="empoutdate">퇴사일자</label>
 			<div class="field31">
-				<input class="empdate" type="date" name="retire_day" id="datepicker4" value="<c:out value="${list['retire_day']}"/>">
+				<input class="empdate" type="text" name="retire_day" id="datepicker4" readonly="readonly" value="<c:out value="${list['retire_day']}"/>" ${list['mil_yn'] == null ? '' : 'N' ? 'disabled' : ''}>
 			</div>
 			
 			<label class="business" for="businessno">사업자번호</label>
@@ -286,7 +325,12 @@
 				<div class="w3-container">
 					<h2>사업자등록증</h2>
 					<span onclick="closepreview(event,'bcertmodal')" class="w3-button w3-display-topright">&times;</span>
+			<c:if test="${list['profile'] eq null }">
+					<img id="imgbcert" src="../resources/images/noimage.jpg"/>
+			</c:if>
+			<c:if test="${list['profile'] ne null }">
 					<img id="imgbcert" src="../resources/images/bcert/<c:out value="${list['cmp_reg_image']}"/>">
+			</c:if>
 				</div>
 			</div>
 		</div>
@@ -298,7 +342,12 @@
 				<div class="w3-container">
 					<h2>이력서</h2>
 					<span onclick="closepreview(event, 'resmodal')" class="w3-button w3-display-topright">&times;</span>
+			<c:if test="${list['profile'] eq null }">
+					<img id="imgres" src="../resources/images/noimage.jpg"/>
+			</c:if>
+			<c:if test="${list['profile'] ne null }">
 					<img  id="imgres" src="../resources/images/resume/<c:out value="${list['resume']}"/>">
+			</c:if>
 				</div>
 			</div>
 		</div>

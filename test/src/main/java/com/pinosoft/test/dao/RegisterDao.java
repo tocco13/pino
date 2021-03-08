@@ -56,6 +56,10 @@ public class RegisterDao {
 		return SqlSession.delete("iSQL.deleteEmp", string);
 	}
 	
+	public int empMultiDelete(int sabun) {
+		return SqlSession.delete("iSQL.deleteMultiEmp", sabun);
+	}
+	
 	public int insertFile(FileVO fVO) {
 		return SqlSession.insert("iSQL.insertFile", fVO);
 	}

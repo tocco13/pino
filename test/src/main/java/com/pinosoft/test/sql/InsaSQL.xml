@@ -89,7 +89,7 @@
 		kosa_reg_yn, 
 		kosa_class_code, 
 		join_day, retire_day, 
-		cmp_reg_no, cmp_reg_image, crm_name, self_intro
+		cmp_reg_no, cmp_reg_image, crm_name, self_intro, current_yn
 		)
 		VALUES (
 			(select nvl(max(sabun)+1,1) from insa),
@@ -99,7 +99,7 @@
 			#{dept_code, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{gart_level, jdbcType=VARCHAR}, #{put_yn, jdbcType=VARCHAR},
 			#{mil_yn, jdbcType=VARCHAR},	#{mil_type, jdbcType=VARCHAR}, #{mil_level, jdbcType=VARCHAR}, #{mil_startdate, jdbcType=VARCHAR}, #{mil_enddate, jdbcType=VARCHAR}, 
 			#{kosa_reg_yn, jdbcType=VARCHAR}, #{kosa_class_code, jdbcType=VARCHAR}, #{join_day, jdbcType=VARCHAR}, #{retire_day, jdbcType=VARCHAR}, #{cmp_reg_no, jdbcType=VARCHAR},
-			#{cmp_reg_image, jdbcType=VARCHAR}, #{crm_name, jdbcType=VARCHAR}, #{self_intro, jdbcType=VARCHAR}
+			#{cmp_reg_image, jdbcType=VARCHAR}, #{crm_name, jdbcType=VARCHAR}, #{self_intro, jdbcType=VARCHAR}, #{current_yn, jdbcType=VARCHAR}
 			)	
 	</insert>
 	
@@ -204,8 +204,8 @@
 		    mil_level, mil_startdate, 
 		    mil_enddate, job_type, 
             gart_level, self_intro, 
-            crm_name, 
-			f.save_name as profile, rsave_name as resume, rfile_path as resumelink
+            crm_name, current_yn,
+			f.save_name as profile, f.file_path as profilelink, rsave_name as resume, rfile_path as resumelink
 		FROM 
 		    insa i , files f, bfiles b, rfiles r 
 		WHERE 
@@ -215,9 +215,9 @@
 		    WHERE 
 		    sabun = #{sabun}
 		    )
-			and i.id = f.id
-            and i.id = bid
-            and i.id = rid
+			and i.id = f.id(+)
+            and i.id = bid(+)
+            and i.id = rid(+)
 	</select>
 	
 	<update id="empUpdate" parameterType="iVO">
@@ -306,11 +306,20 @@
 		<if test="self_intro !=null and self_intro !=''">
 		,self_intro = #{self_intro, jdbcType=VARCHAR}
 		</if>
+		<if test="current_yn != null and current_yn !=''">
+		,current_yn = #{current_yn, jdbcType=VARCHAR}
+		</if>
 		WHERE
 		sabun = #{sabun}
 	</update>
 	
 	<delete id="deleteEmp" parameterType="String">
+		DELETE FROM insa
+		WHERE 
+		sabun = #{sabun}
+	</delete>
+	
+	<delete id="deleteMultiEmp" parameterType="int">
 		DELETE FROM insa
 		WHERE 
 		sabun = #{sabun}

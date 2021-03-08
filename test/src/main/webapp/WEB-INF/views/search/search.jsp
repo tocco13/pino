@@ -75,7 +75,6 @@
 	<div class="w3-right" style="padding-top: 25px; padding-right: 25px;">
 		<button type="submit" class="searchbtn" id="searchbtn" onclick="check(event);">검색</button>
 		<button type="reset" class="reset">초기화</button>
-		<button type="button" class="previous">이전</button>
 	</div>
 	<div class="searchtable" style="padding-top: 80px; margin: 0px 50px 0px 50px;'">
 		<table class="headrow" id="headrow" style="width: 100%;">

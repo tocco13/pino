@@ -1,5 +1,84 @@
 $(document).ready(function(){
- 	
+	
+	$('#gobackbtn').click(function(){
+		history.back();
+	});
+
+ 	 /* 날짜 선택 - datepicker */
+	$( "#datepicker1" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년',
+	    onSelect: function(selected){
+	  	  $("#datepicker2").datepicker("option","minDate", selected)
+	    }
+	  });
+	
+	$( "#datepicker2" ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년',
+	      onSelect: function(selected){
+  		$("#datepicker1").datepicker("option","maxDate", selected)
+	    }
+	  });
+	  
+
+	
+	$('#datepicker3').datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년',
+	      onSelect: function(selected){
+	  	  $("#datepicker4").datepicker("option","minDate", selected)
+	    }
+	  });
+	
+	$( '#datepicker4' ).datepicker({
+	    dateFormat: 'yy/mm/dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    dayNames: ['일','월','화','수','목','금','토'],
+	    dayNamesShort: ['일','월','화','수','목','금','토'],
+	    dayNamesMin: ['일','월','화','수','목','금','토'],
+	    showMonthAfterYear: true,
+	    changeMonth: true,
+	    changeYear: true,
+	    yearSuffix: '년',
+	       onSelect: function(selected){
+	  	  $("#datepicker3").datepicker("option","maxDate", selected)
+	    }
+	  });
+	   	
  	$("#empkrname").keyup(function(event){
  		if(!(event.keyCode >= 37 && event.keyCode <=40)) {
  			var inputVal = $(this).val();
@@ -83,12 +162,14 @@ $(document).ready(function(){
  		if($(this).val() == 'Y'){
 			$('#miltype').prop("disabled",false);
  			$('#milrank').prop("disabled",false);
- 			$('#datepicker').prop("disabled",false);
+ 			$('#datepicker1').prop("disabled",false);
  			$('#datepicker2').prop("disabled",false);
  		} else {
  		 	$('#miltype').prop("disabled",true);
+ 		 	$('#miltype').val("");
  			$('#milrank').prop("disabled",true);
- 			$('#datepicker').prop("disabled",true);
+ 			$('#milrank').val("");
+ 			$('#datepicker1').prop("disabled",true);
  			$('#datepicker2').prop("disabled",true);
  		}
  	});
@@ -101,26 +182,24 @@ $(document).ready(function(){
  		}
  	});
  	
+ 	$('#empstatselect').change(function(){
+ 		if($(this).val() == 'Y'){
+ 			$('#datepicker3').prop("disabled", false);
+ 			$('#datepicker4').prop("disabled", false);
+ 		} else {
+ 			$('#datepicker3').prop("disabled", true);
+ 			$('#datepicker4').prop("disabled", true);
+ 		}
+ 	});
+ 	
  	$('#editbtn').click(function(){
 		event.preventDefault();
- 		
- 		var krname = $('#empkrname').val();
- 		var empid = $('#empid').val();
- 		var emppw = $('#emppw').val();
- 		var emphp = $('#empmobile').val();
- 		var empjoomin = $('#empjoomin').val();
- 		var email = $('#empemailfull').val();
- 		if(krname =='' || krname== null ||
- 		empid == '' || empid == null ||
- 		emppw == '' || emppw == null ||
- 		emphp == '' || emphp == null ||
- 		empjoomin == '' || empjoomin == null ||
- 		email == '' || email == null){
- 			alert('필수항목이 비었습니다.');
- 			return;
- 		}		
+ 		var str = $('#empemail').val();
+ 		var str2 = $('#empmailprovider').val();
+ 		var test = str.concat(str2);
+ 		$('#empemailfull').attr('value',test);
 		
-		if(confirm("등록하시겠습니까?")) {
+		if(confirm("수정하시겠습니까?")) {
 			var salary = $('#empsalary').val();
 			if(salary == "" || salary == null){
 				salary = 0;
@@ -203,7 +282,6 @@ $(document).ready(function(){
 	 $('#deletebtn').click(function(){
 	 	if(confirm("삭제하시겠습니까?")){
 	 		var tmp = $('#empno').val();
-	 		alert(tmp);
 	 		$('#fields').attr('action', '/edit/deleteProc.pino');
 	 		$('#fields').submit();
 	 	} else {
@@ -262,6 +340,13 @@ function preview(event, imgid){
  			tag.setAttribute("src", event.target.result);
  		}
  		 reader.readAsDataURL(event.target.files[0]);    
+}
+
+function showFile(input, inputid) {
+  let file = input.files[0];
+  var tmp = file.name;
+  var inputpath = document.getElementById(inputid);
+  inputpath.setAttribute("value",tmp);
 }
 
 //모달 띄워 이미지 보기
@@ -331,4 +416,10 @@ function uncomma(str) {
 //값 입력시 콤마찍기
 function inputNumberFormat(obj) {
     obj.value = comma(uncomma(obj.value));
+}
+
+function empDetail(sabun){
+	var t = $(this).innerText;
+	$('#sabunparam').val(t);
+	$('#editform').submit();
 }

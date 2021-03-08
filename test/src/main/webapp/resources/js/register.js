@@ -11,9 +11,13 @@ $(document).ready(function(){
 	    dayNamesShort: ['일','월','화','수','목','금','토'],
 	    dayNamesMin: ['일','월','화','수','목','금','토'],
 	    showMonthAfterYear: true,
+	    timepicker: false,
 	    changeMonth: true,
 	    changeYear: true,
-	    yearSuffix: '년'
+	    yearSuffix: '년',
+	    onSelect: function(selected){
+	  	  $("#datepicker2").datepicker("option","minDate", selected)
+	    }
 	  });
 	
 	$( "#datepicker2" ).datepicker({
@@ -27,31 +31,14 @@ $(document).ready(function(){
 	    dayNamesMin: ['일','월','화','수','목','금','토'],
 	    showMonthAfterYear: true,
 	    changeMonth: true,
+	    timepicker: false,
 	    changeYear: true,
-	    yearSuffix: '년'
+	    yearSuffix: '년',
+        onSelect: function(selected){
+  		$("#datepicker1").datepicker("option","maxDate", selected)
+	    }
 	  });
 	  
-	  //입영일 전역일 비교
-	  $('#datepicker2').on("blur", function(){
-	  	if($('#datepicker1').val() != null && $('#datepicker2').val() != null){
-	  		var joinday = $('#datepicker1').val();
-	  		var retireday = $('#datepicker2').val();
-	  		
-	  		console.log("join: ", joinday);
-	  		console.log("retire: ", retireday);
-	  		
-	  		//'/'로 나눈다
-	  		var startArray = joinday.split('/');
-	  		var endArray = retireday.split('/');
-	  		
-	  		//날짜를 숫자형태의 날짜정보로 변환하여 비교
-	  		if(joinday >  retireday){
-	  			alert("퇴사일이 입사일보다 빠를 수 없습니다.");
-	  			$('#datepicker4').val("");
-	  			return false;
-	  		}
-	  	}
-	  });
 	
 	$( "#datepicker3" ).datepicker({
 	    dateFormat: 'yy/mm/dd',
@@ -63,9 +50,14 @@ $(document).ready(function(){
 	    dayNamesShort: ['일','월','화','수','목','금','토'],
 	    dayNamesMin: ['일','월','화','수','목','금','토'],
 	    showMonthAfterYear: true,
+	    timepicker: false,
 	    changeMonth: true,
 	    changeYear: true,
-	    yearSuffix: '년'
+	    yearSuffix: '년',
+	    onSelect: function(selected){
+	  	  $("#datepicker4").datepicker("option","minDate", selected)
+	    }
+	    //여기서 선택한 날짜가 최소 일자가 되게.
 	  });
 	
 	$( "#datepicker4" ).datepicker({
@@ -79,31 +71,15 @@ $(document).ready(function(){
 	    dayNamesMin: ['일','월','화','수','목','금','토'],
 	    showMonthAfterYear: true,
 	    changeMonth: true,
+	    timepicker: false,
 	    changeYear: true,
-	    yearSuffix: '년'
+	    yearSuffix: '년',
+	     onSelect: function(selected){
+	  	  $("#datepicker3").datepicker("option","maxDate", selected)
+	    }
+	    //앞서 선택한 날짜보다 이전 날짜 선택 금지
 	  });
 	  
-	  //입사일 퇴사일 비교
-	  $('#datepicker4').on("blur", function(){
-	  	if($('#datepicker3').val() != null && $('#datepicker4').val() != null){
-	  		var joinday = $('#datepicker3').val();
-	  		var retireday = $('#datepicker4').val();
-	  		
-	  		console.log("join: ", joinday);
-	  		console.log("retire: ", retireday);
-	  		
-	  		//'/'로 나눈다
-	  		var startArray = joinday.split('/');
-	  		var endArray = retireday.split('/');
-	  		
-	  		//날짜를 숫자형태의 날짜정보로 변환하여 비교
-	  		if(joinday >  retireday){
-	  			alert("퇴사일이 입사일보다 빠를 수 없습니다.");
-	  			$('#datepicker4').val("");
-	  			return false;
-	  		}
-	  	}
-	  });
  	 	
  	$("#empkrname").keyup(function(event){
  		if(!(event.keyCode >= 37 && event.keyCode <=40)) {
@@ -215,15 +191,15 @@ $(document).ready(function(){
  		if($(this).val() == 'Y'){
 			$('#miltype').prop("disabled",false);
  			$('#milrank').prop("disabled",false);
- 			$('#datepicker').prop("disabled",false);
+ 			$('#datepicker1').prop("disabled",false);
  			$('#datepicker2').prop("disabled",false);
  		} else {
  		 	$('#miltype').prop("disabled",true);
  		 	$('#miltype').val("");
  			$('#milrank').prop("disabled",true);
  			$('#milrank').val("");
- 			$('#datepicker').prop("disabled",true);
- 			$('#datepicker').val("");
+ 			$('#datepicker1').prop("disabled",true);
+ 			$('#datepicker1').val("");
  			$('#datepicker2').prop("disabled",true);
  			$('#datepicker2').val("");
  		}
@@ -394,16 +370,6 @@ function preview(event, imgid){
 }
 
 //이미지 텍스트로
-/*
-function preview2(event, pathid){	
- 		var reader = new FileReader();
- 		reader.onload = function(event) {
- 			var pathvar = document.getElementById(pathid);
- 			pathvar.setAttribute("value", event.target.filename);
- 		}
- 		 reader.readAsText(event.target.files[0],"UTF-8");    
-}
-*/
 
 function showFile(input, inputid) {
   let file = input.files[0];
